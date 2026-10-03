@@ -5,8 +5,11 @@ Acara: Sabtu, 24 Oktober 2026, 15.00 WIB di Kala Cemara, Greenforest Bandung.
 
 ## Isi project
 
-- `index.html` : seluruh undangan dalam satu file
+- `index.html` : undangan interaktif lengkap
+- `share.html` : kartu satu halaman ringkas, ini yang dibagikan ke sosmed lewat tombol Bagikan
 - `README.md` : panduan ini
+
+Kedua halaman saling terhubung lewat nama file, jadi simpan `index.html` dan `share.html` di folder yang sama.
 
 ## Jalankan di komputer
 

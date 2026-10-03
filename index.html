@@ -237,6 +237,28 @@ main { display: flex; flex-direction: column; gap: 22px; padding-top: 30px; }
 .wig { animation: wig .6s ease-in-out; }
 @keyframes wig { 0%,100% { transform: rotate(0); } 25% { transform: rotate(-8deg) scale(1.06); } 75% { transform: rotate(8deg) scale(1.06); } }
 
+.menu { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-top: 6px; }
+.menu-col { background: var(--sky-2); border-radius: 22px; padding: 14px 12px; display: flex; flex-direction: column; align-items: center; gap: 10px; min-width: 0; }
+.menu-col .treat { background: none; padding: 0; flex: none; width: 100%; }
+.menu-col .treat:hover { transform: translateY(-3px); }
+.pills { display: flex; flex-wrap: wrap; justify-content: center; gap: 6px; }
+.pill { background: var(--white); border-radius: 999px; padding: 5px 12px; font-size: 13px; font-weight: 700; color: var(--ink); box-shadow: 0 3px 0 var(--edge); transition: transform .15s; }
+.pill:hover { transform: translateY(-2px) rotate(-2deg); }
+.pill:active { transform: translateY(2px); box-shadow: 0 0 0 var(--edge); }
+.pill.more { background: var(--butter); box-shadow: 0 3px 0 #ffd36a; }
+.share-grid { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 6px; }
+.sbtn { display: inline-flex; align-items: center; justify-content: center; padding: 11px 16px; border-radius: 999px; font-weight: 700; font-size: 14px; color: var(--ink); text-decoration: none; background: var(--bg); box-shadow: 0 4px 0 var(--sh); transition: transform .15s; }
+.sbtn:hover { transform: translateY(-2px); }
+.sbtn:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--sh); }
+.sbtn.wa { --bg: #bff0cf; --sh: #95d9ad; }
+.sbtn.tg { --bg: #bfe0f8; --sh: #93c6ee; }
+.sbtn.fb { --bg: #c9d6f7; --sh: #a4b6ec; }
+.sbtn.xx { --bg: #e3e8ef; --sh: #c4ccd8; }
+.sbtn.ig { --bg: var(--pink); --sh: #ffacc8; }
+.sbtn.cp { --bg: var(--butter); --sh: #ffd36a; }
+.sbtn.nt { --bg: var(--lilac); --sh: #b8a6ea; }
+.share-note { font-size: 14px; }
+@media (max-width: 380px) { .menu { grid-template-columns: 1fr; } }
 .agenda { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 .phase { background: var(--white); border-radius: 28px; padding: 24px 22px; box-shadow: 0 6px 0 var(--edge); display: flex; flex-direction: column; gap: 12px; min-width: 0; position: relative; }
 .phase.night { background: linear-gradient(180deg, #bcd8f6 0%, #d8cdf3 100%); box-shadow: 0 6px 0 #b4c9ee; overflow: hidden; }
@@ -553,15 +575,26 @@ footer p { color: var(--ink-soft); font-weight: 600; margin-top: 6px; }
     <div class="sticker mt"><svg class="ico" aria-hidden="true"><use href="#i-snack"/></svg></div>
     <p class="label">Konsumsi</p>
     <h2>Snack dan minuman sudah disiapkan</h2>
-    <p>Tinggal datang dan ngemil sepuasnya, sambil nonton, main games, dan ngobrol bareng.</p>
-    <div class="treats">
-      <button class="treat" id="snack" data-int aria-label="Snack, tap untuk melihat popcorn melompat">
-        <span class="tb"><svg class="ico" aria-hidden="true"><use href="#i-snack"/></svg></span><b>Snack</b><span class="s">tap aku</span>
-      </button>
-      <button class="treat" id="drink" data-int aria-label="Minuman, tap untuk bersulang">
-        <span class="tb"><svg class="ico" aria-hidden="true"><use href="#i-cup"/></svg></span><b>Minuman</b><span class="s">tap aku</span>
-      </button>
+    <p>Tinggal datang dan ngemil sepuasnya, sambil nonton, main games, dan ngobrol bareng. Tap menunya kalau penasaran.</p>
+    <div class="menu">
+      <div class="menu-col">
+        <button class="treat" id="snack" data-int aria-label="Snack, tap untuk melihat popcorn melompat">
+          <span class="tb"><svg class="ico" aria-hidden="true"><use href="#i-snack"/></svg></span><b>Snack</b><span class="s">tap aku</span>
+        </button>
+        <div class="pills" data-col="snack">
+          <button class="pill" data-int>Cireng</button><button class="pill" data-int>Kentang goreng</button><button class="pill" data-int>Sosis</button><span class="pill more">dan lainnya</span>
+        </div>
+      </div>
+      <div class="menu-col">
+        <button class="treat" id="drink" data-int aria-label="Minuman, tap untuk bersulang">
+          <span class="tb"><svg class="ico" aria-hidden="true"><use href="#i-cup"/></svg></span><b>Minuman</b><span class="s">tap aku</span>
+        </button>
+        <div class="pills" data-col="drink">
+          <button class="pill" data-int>Jus</button><button class="pill" data-int>Kopi</button><button class="pill" data-int>Mojito</button><span class="pill more">dan lainnya</span>
+        </div>
+      </div>
     </div>
+  <a class="btn" id="menulink" href="https://drive.google.com/file/d/1Z2DD34FisKMChJIp4_i_uAvGwZ8JzSRt/view?usp=sharing" target="_blank" rel="noopener">Lihat detail menu</a>
   </section>
 
   <section class="agenda" aria-label="Acara">
@@ -605,6 +638,24 @@ footer p { color: var(--ink-soft); font-weight: 600; margin-top: 6px; }
         <p class="cap" id="toast-cap">Tap marshmallow untuk memanggang</p>
       </div>
     </div>
+  </section>
+
+  <section class="card" aria-label="Bagikan undangan">
+    <div class="sticker"><svg class="ico" aria-hidden="true"><use href="#i-star"/></svg></div>
+    <p class="label">Bagikan</p>
+    <h2>Kirim ke keluarga</h2>
+    <p>Yang dibagikan adalah kartu satu halaman yang berisi semua info penting, enak dilihat di sosmed dan chat.</p>
+    <a class="btn" id="cardlink" href="share.html">Lihat kartu satu halaman</a>
+    <div class="share-grid">
+      <a class="sbtn wa" id="s-wa" href="#" target="_blank" rel="noopener">WhatsApp</a>
+      <a class="sbtn tg" id="s-tg" href="#" target="_blank" rel="noopener">Telegram</a>
+      <a class="sbtn fb" id="s-fb" href="#" target="_blank" rel="noopener">Facebook</a>
+      <a class="sbtn xx" id="s-x" href="#" target="_blank" rel="noopener">X</a>
+      <button class="sbtn ig" id="s-ig">Instagram</button>
+      <button class="sbtn cp" id="s-cp">Salin link</button>
+      <button class="sbtn nt" id="s-native" hidden>Bagikan lainnya</button>
+    </div>
+    <p class="share-note" id="share-note" aria-live="polite">Untuk Instagram, tap tombolnya untuk menyalin link, lalu tempel di Story atau DM.</p>
   </section>
 
   <footer>
@@ -806,6 +857,56 @@ footer p { color: var(--ink-soft); font-weight: 600; margin-top: 6px; }
     document.getElementById('toast-cap').textContent = stages[st].t;
     var p = center(tb); burst(p[0], p[1] - 10, 8, ['#ffe29a', '#ffb4a2', '#ffffff'], true);
   });
+
+  /* ---- pill menu ---- */
+  [].slice.call(document.querySelectorAll('.pill[data-int]')).forEach(function (pl) {
+    var isSnack = pl.parentNode.getAttribute('data-col') === 'snack';
+    onAct(pl, function () {
+      var p = center(pl);
+      burst(p[0], p[1], 9, isSnack ? ['#ffe29a', '#ffc9dc', '#ffffff'] : ['#9ccbf2', '#c4ecd9', '#ffffff'], true);
+    });
+  });
+
+  /* ---- bagikan ---- */
+  (function () {
+    var shareUrl;
+    try { shareUrl = new URL('share.html', location.href).href; } catch (e) { shareUrl = location.href; }
+    var text = 'Kamu diundang ke ulang tahun Tria, Mama, dan Papa! Sabtu, 24 Oktober 2026, 15.00 WIB di Kala Cemara, Greenforest Bandung. Dress code: atasan putih dan jeans.';
+    var eu = encodeURIComponent;
+    document.getElementById('s-wa').href = 'https://wa.me/?text=' + eu(text + ' ' + shareUrl);
+    document.getElementById('s-tg').href = 'https://t.me/share/url?url=' + eu(shareUrl) + '&text=' + eu(text);
+    document.getElementById('s-fb').href = 'https://www.facebook.com/sharer/sharer.php?u=' + eu(shareUrl);
+    document.getElementById('s-x').href = 'https://twitter.com/intent/tweet?text=' + eu(text) + '&url=' + eu(shareUrl);
+    var note = document.getElementById('share-note');
+    function fallbackCopy() {
+      var ok = false;
+      try {
+        var ta = document.createElement('textarea');
+        ta.value = shareUrl; ta.setAttribute('readonly', '');
+        ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        ok = document.execCommand('copy');
+        document.body.removeChild(ta);
+      } catch (e) { ok = false; }
+      return ok;
+    }
+    function copyLink(okMsg) {
+      function res(ok) { note.textContent = ok ? okMsg : 'Salin manual link ini: ' + shareUrl; }
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl).then(function () { res(true); }, function () { res(fallbackCopy()); });
+      } else { res(fallbackCopy()); }
+    }
+    var cp = document.getElementById('s-cp'), ig = document.getElementById('s-ig');
+    cp.addEventListener('click', function () { copyLink('Link tersalin. Tinggal tempel di mana saja.'); var p = center(cp); burst(p[0], p[1], 10, PAL, true); });
+    ig.addEventListener('click', function () { copyLink('Link tersalin. Buka Instagram, lalu tempel di Story atau DM.'); var p = center(ig); burst(p[0], p[1], 10, PAL, true); });
+    var nt = document.getElementById('s-native');
+    if (navigator.share) {
+      nt.hidden = false;
+      nt.addEventListener('click', function () {
+        navigator.share({ title: 'Tiup Lilin di Bawah Bintang', text: text, url: shareUrl }).catch(function () {});
+      });
+    }
+  })();
 
   /* ---- bintang di penutup ---- */
   var pal = document.getElementById('pal');

@@ -1,0 +1,286 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Tiup Lilin di Bawah Bintang</title>
+<meta name="theme-color" content="#bfe0f8">
+<meta name="description" content="Undangan ulang tahun Tria, Mama, dan Papa. Sabtu, 24 Oktober 2026, 15.00 WIB di Kala Cemara, Greenforest Bandung.">
+<meta property="og:title" content="Tiup Lilin di Bawah Bintang">
+<meta property="og:description" content="Ulang tahun Tria, Mama, dan Papa. Sabtu, 24 Oktober 2026, 15.00 WIB di Kala Cemara, Bandung. Dress code: atasan putih dan jeans.">
+<meta property="og:type" content="website">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48'%3E%3Cpolygon points='24,3 29.5,17.5 45,18.3 32.9,28 37,43 24,34.5 11,43 15.1,28 3,18.3 18.5,17.5' fill='%23ffe29a' stroke='%232c4a7c' stroke-width='2.5' stroke-linejoin='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@500;600;700&family=Nunito:wght@400;600;700&display=swap">
+<style>
+/* Layout: satu kartu poster ringkas berisi seluruh info undangan, dibuat muat dalam satu layar HP untuk dibagikan ke sosmed. */
+:root {
+  --sky-1: #bfe0f8; --sky-2: #e8f4fd; --ink: #2c4a7c; --ink-soft: #4f6b9c; --blue: #9ccbf2; --blue-deep: #6aaae6;
+  --white: #ffffff; --butter: #ffe29a; --pink: #ffc9dc; --lilac: #d6c8f5; --mint: #c4ecd9; --edge: #c3dff6;
+  --font-display: "Fredoka", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Nunito", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: light;
+}
+* { box-sizing: border-box; }
+html { background: var(--sky-2); }
+body {
+  margin: 0; min-height: 100svh; background: linear-gradient(180deg, var(--sky-1) 0%, var(--sky-2) 60%); color: var(--ink);
+  font-family: var(--font-body); font-size: 14px; line-height: 1.45; display: grid; place-items: center; overflow-x: hidden;
+  padding: max(14px, env(safe-area-inset-top)) 14px max(14px, env(safe-area-inset-bottom));
+}
+h1, h2, h3 { font-family: var(--font-display); margin: 0; color: var(--ink); }
+p { margin: 0; }
+.ico { width: 100%; height: 100%; display: block; fill: none; stroke: var(--ink); stroke-width: 2.5; stroke-linecap: round; stroke-linejoin: round; }
+.label { font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; color: var(--blue-deep); }
+
+.poster {
+  position: relative; isolation: isolate; width: 100%; max-width: 440px; overflow: hidden; border-radius: 32px;
+  background: linear-gradient(180deg, #d5ebfb 0%, #eef7fe 100%); box-shadow: 0 8px 0 var(--edge);
+  padding: 0 18px 20px; display: flex; flex-direction: column; gap: 12px;
+}
+.bunting { display: block; width: calc(100% + 36px); margin: -2px -18px 0; height: auto; transform-origin: 50% 0; animation: swing 6s ease-in-out infinite; }
+@keyframes swing { 0%,100% { transform: rotate(-.6deg); } 50% { transform: rotate(.6deg); } }
+.sp {
+  position: absolute; z-index: -1; background: var(--white); animation: twinkle 3.2s ease-in-out infinite;
+  clip-path: polygon(50% 0, 62% 38%, 100% 50%, 62% 62%, 50% 100%, 38% 62%, 0 50%, 38% 38%);
+}
+.sp.y { background: var(--butter); }
+@keyframes twinkle { 0%,100% { transform: scale(.5) rotate(0deg); opacity: .45; } 50% { transform: scale(1) rotate(25deg); opacity: 1; } }
+
+header { position: relative; display: flex; flex-direction: column; gap: 6px; }
+header h1 { font-size: 2.15rem; font-weight: 700; line-height: 1.05; padding-right: 44px; text-wrap: balance; }
+.hl { display: inline-block; background: var(--butter); border-radius: 14px; padding: 0 .16em 2px; transform: rotate(-2.5deg); box-shadow: 0 4px 0 #ffd36a; }
+header .sub { color: var(--ink-soft); font-weight: 600; }
+.buddy { position: absolute; right: -2px; top: -4px; width: 52px; height: 52px; animation: hop 2.8s ease-in-out infinite; }
+@keyframes hop { 0%,100% { transform: translateY(0) rotate(-6deg); } 40%,60% { transform: translateY(-10px) rotate(6deg); } }
+
+.when { display: grid; grid-template-columns: auto 1fr; gap: 14px; align-items: center; }
+.cal { background: var(--white); border-radius: 18px; overflow: hidden; text-align: center; min-width: 92px; box-shadow: 0 5px 0 var(--edge); transform: rotate(-3deg); }
+.cal .top { display: block; background: var(--pink); padding: 4px 0 3px; font-size: 11px; font-weight: 700; letter-spacing: .16em; text-transform: uppercase; }
+.cal .d { display: block; font-family: var(--font-display); font-weight: 700; font-size: 2.8rem; line-height: 1; padding: 6px 10px 0; }
+.cal .m { display: block; font-size: 10px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; padding: 1px 8px 9px; color: var(--ink-soft); }
+.where { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.where .t { font-family: var(--font-display); font-size: 1.3rem; font-weight: 700; line-height: 1.1; }
+.where .t small { font-family: var(--font-body); font-size: 13px; font-weight: 700; color: var(--ink-soft); }
+.where .l { font-weight: 700; }
+.where .a { font-size: 12px; color: var(--ink-soft); font-weight: 600; }
+
+.bds { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+.bdc { min-width: 0; border-radius: 18px; padding: 8px 4px 9px; text-align: center; background: var(--bg); box-shadow: 0 4px 0 var(--sh); }
+.bdc.pink { --bg: var(--pink); --sh: #ffacc8; }
+.bdc.mint { --bg: var(--mint); --sh: #9edcc0; }
+.bdc.lilac { --bg: var(--lilac); --sh: #b8a6ea; }
+.bdc .ic { width: 28px; height: 28px; margin: 0 auto; }
+.bdc .nm { display: block; font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; line-height: 1.1; }
+.bdc .dt { display: block; font-size: 12px; font-weight: 700; }
+
+.grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.mini { background: var(--white); border-radius: 22px; padding: 12px; box-shadow: 0 5px 0 var(--edge); display: flex; flex-direction: column; gap: 8px; min-width: 0; }
+.mini h3 { font-size: 1rem; font-weight: 700; }
+.row { display: flex; align-items: center; gap: 8px; min-width: 0; }
+.row .b { width: 40px; height: 40px; flex: none; border-radius: 50%; padding: 7px; background: var(--sky-2); }
+.row .b.j { background: #d3e8fa; }
+.row b { display: block; font-size: 13px; line-height: 1.2; }
+.row span { display: block; font-size: 12px; color: var(--ink-soft); font-weight: 600; line-height: 1.3; }
+
+.plan { background: var(--white); border-radius: 22px; padding: 12px; box-shadow: 0 5px 0 var(--edge); display: grid; grid-template-columns: 1.4fr 1fr; gap: 12px; }
+.plan h3 { font-size: 1rem; font-weight: 700; margin-bottom: 6px; }
+.plan h3 small { font-family: var(--font-body); font-size: 12px; color: var(--ink-soft); font-weight: 700; margin-left: 4px; }
+.chips { display: flex; flex-wrap: wrap; gap: 5px; }
+.chip { display: inline-flex; align-items: center; gap: 4px; background: var(--sky-2); border-radius: 999px; padding: 3px 9px 3px 4px; font-size: 12px; font-weight: 700; }
+.chip i { width: 20px; height: 20px; display: block; }
+.plan .night { background: linear-gradient(180deg, #bcd8f6, #d8cdf3); border-radius: 16px; padding: 8px 10px; }
+.plan .night .chip { background: rgba(255,255,255,.75); }
+
+footer { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+footer p { font-weight: 700; flex: 1 1 200px; min-width: 0; }
+footer p span { display: block; font-weight: 600; color: var(--ink-soft); font-size: 13px; }
+.btn {
+  display: inline-flex; align-items: center; padding: 10px 16px; border-radius: 999px; background: var(--butter); color: var(--ink);
+  font-weight: 700; text-decoration: none; font-size: 14px; box-shadow: 0 4px 0 #ffd36a;
+}
+.btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+
+.lnk { font-size: 12px; font-weight: 700; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
+.lnk:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
+@media (max-width: 360px) { .grid2 { grid-template-columns: 1fr; } .plan { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { .bunting, .sp, .buddy { animation: none !important; } .sp { transform: scale(.8); opacity: .9; } }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <defs>
+    <symbol id="i-candle" viewBox="0 0 48 48">
+      <ellipse cx="24" cy="42" rx="14" ry="3.5" fill="#fff"/>
+      <rect x="17" y="21" width="14" height="21" rx="3" fill="#fff"/>
+      <path d="M17 29 l14 -4 M17 36 l14 -4" stroke-width="2" opacity=".5"/>
+      <path d="M24 5 C30 12 31 17 24 21 C17 17 18 12 24 5Z" fill="#ffe29a"/>
+    </symbol>
+    <symbol id="i-tv" viewBox="0 0 48 48">
+      <path d="M18 12 L13 5 M30 12 L35 5"/>
+      <rect x="5" y="12" width="38" height="27" rx="7" fill="#9ccbf2"/>
+      <rect x="10" y="17" width="28" height="17" rx="4" fill="#fff" stroke-width="2"/>
+      <polygon points="21,21 21,30 29,25.5" fill="#ffc9dc" stroke-width="2"/>
+      <path d="M14 39 v4 M34 39 v4"/>
+    </symbol>
+    <symbol id="i-game" viewBox="0 0 48 48">
+      <rect x="4" y="14" width="40" height="23" rx="11.5" fill="#d6c8f5"/>
+      <rect x="11" y="23" width="12" height="4.5" rx="2" fill="#fff" stroke-width="2"/>
+      <rect x="14.8" y="19.5" width="4.5" height="12" rx="2" fill="#fff" stroke-width="2"/>
+      <circle cx="31" cy="23" r="2.8" fill="#ffc9dc" stroke-width="2"/>
+      <circle cx="37" cy="28.5" r="2.8" fill="#ffe29a" stroke-width="2"/>
+    </symbol>
+    <symbol id="i-bear" viewBox="0 0 48 48">
+      <circle cx="11" cy="12" r="6.5" fill="#ffe29a"/>
+      <circle cx="37" cy="12" r="6.5" fill="#ffe29a"/>
+      <circle cx="24" cy="26" r="17" fill="#ffe29a"/>
+      <ellipse cx="24" cy="32" rx="7.5" ry="5.5" fill="#fff" stroke-width="2"/>
+      <circle cx="17.5" cy="24" r="1.8" fill="#2c4a7c" stroke="none"/>
+      <circle cx="30.5" cy="24" r="1.8" fill="#2c4a7c" stroke="none"/>
+      <ellipse cx="24" cy="29.5" rx="2.6" ry="1.9" fill="#2c4a7c" stroke="none"/>
+      <circle cx="13" cy="31" r="3" fill="#ffc9dc" stroke="none" opacity=".9"/>
+      <circle cx="35" cy="31" r="3" fill="#ffc9dc" stroke="none" opacity=".9"/>
+    </symbol>
+    <symbol id="i-corn" viewBox="0 0 48 48">
+      <ellipse cx="24" cy="21" rx="9.5" ry="16.5" fill="#ffe29a"/>
+      <g fill="#fff" stroke="none" opacity=".75">
+        <circle cx="20" cy="11" r="1.8"/><circle cx="28" cy="11" r="1.8"/>
+        <circle cx="18" cy="18" r="1.8"/><circle cx="24" cy="18" r="1.8"/><circle cx="30" cy="18" r="1.8"/>
+        <circle cx="18" cy="25" r="1.8"/><circle cx="24" cy="25" r="1.8"/><circle cx="30" cy="25" r="1.8"/>
+        <circle cx="21" cy="32" r="1.8"/><circle cx="27" cy="32" r="1.8"/>
+      </g>
+      <path d="M24 45 C9 41 7 29 13 21 C17 31 21 37 24 45Z" fill="#c4ecd9"/>
+      <path d="M24 45 C39 41 41 29 35 21 C31 31 27 37 24 45Z" fill="#c4ecd9"/>
+    </symbol>
+    <symbol id="i-marsh" viewBox="0 0 48 48">
+      <path d="M6 43 L35 12" stroke="#b98a5a" stroke-width="3.5"/>
+      <rect x="25" y="4" width="18" height="14" rx="5.5" fill="#fff" transform="rotate(-8 34 11)"/>
+      <rect x="15" y="17" width="18" height="14" rx="5.5" fill="#ffe6ee" transform="rotate(-8 24 24)"/>
+      <circle cx="21" cy="24" r="1.3" fill="#2c4a7c" stroke="none"/>
+      <circle cx="28" cy="23" r="1.3" fill="#2c4a7c" stroke="none"/>
+    </symbol>
+    <symbol id="i-cup" viewBox="0 0 48 48">
+      <rect x="27" y="2" width="5" height="18" rx="2.5" fill="#ffc9dc" transform="rotate(14 29 11)"/>
+      <rect x="9" y="17" width="30" height="6" rx="3" fill="#fff"/>
+      <path d="M12 23 H36 L33 43 a2 2 0 0 1 -2 1.8 H17 a2 2 0 0 1 -2 -1.8Z" fill="#9ccbf2"/>
+      <path d="M15 30 H33" stroke="#fff" stroke-width="2.5" opacity=".7"/>
+      <rect x="18" y="33" width="6" height="6" rx="2" fill="#fff" stroke-width="2" transform="rotate(-10 21 36)"/>
+      <circle cx="29" cy="37" r="1.6" fill="#fff" stroke="none"/>
+    </symbol>
+    <symbol id="i-snack" viewBox="0 0 48 48">
+      <circle cx="14" cy="17" r="6.5" fill="#ffe29a"/>
+      <circle cx="24" cy="12" r="7.5" fill="#ffe29a"/>
+      <circle cx="34" cy="17" r="6.5" fill="#ffe29a"/>
+      <path d="M9 21 H39 L36 44 H12Z" fill="#fff"/>
+      <path d="M17 21 L16 44 M24 21 V44 M31 21 L32 44" stroke="#ffc9dc" stroke-width="4.5"/>
+      <path d="M9 21 H39 L36 44 H12Z" fill="none"/>
+    </symbol>
+    <symbol id="i-shirt" viewBox="0 0 48 48">
+      <path d="M16 6 L5 13 L10 24 L16 21 V43 H32 V21 L38 24 L43 13 L32 6 C30 11 18 11 16 6Z" fill="#fff"/>
+      <path d="M20 8 C22 12 26 12 28 8" stroke-width="2"/>
+      <path d="M24 28 c-2.2 -2.4 -5 .2 -2.8 2.8 l2.8 2.4 l2.8 -2.4 c2.2 -2.6 -.6 -5.2 -2.8 -2.8z" fill="#ffc9dc" stroke-width="2"/>
+    </symbol>
+    <symbol id="i-jeans" viewBox="0 0 48 48">
+      <path d="M13 5 H35 L38 44 H26.5 L24 21 L21.5 44 H10 Z" fill="#8fc3f0"/>
+      <path d="M13 11 H35" stroke-width="2"/>
+      <path d="M15.5 15 q4.5 5 8 0" stroke-width="2"/>
+      <path d="M24 11 V21" stroke-width="2" stroke-dasharray="2 3"/>
+      <path d="M14 40 H21 M27 40 H34" stroke-width="2" stroke-dasharray="2 3" opacity=".6"/>
+    </symbol>
+    <symbol id="i-star" viewBox="0 0 48 48">
+      <polygon points="24,3 29.5,17.5 45,18.3 32.9,28 37,43 24,34.5 11,43 15.1,28 3,18.3 18.5,17.5" fill="#ffe29a"/>
+      <circle cx="19.5" cy="23" r="1.9" fill="#2c4a7c" stroke="none"/>
+      <circle cx="28.5" cy="23" r="1.9" fill="#2c4a7c" stroke="none"/>
+      <path d="M21 27.5 q3 3 6 0" stroke-width="2"/>
+      <circle cx="16" cy="27" r="2.3" fill="#ffc9dc" stroke="none"/>
+      <circle cx="32" cy="27" r="2.3" fill="#ffc9dc" stroke="none"/>
+    </symbol>
+  </defs>
+</svg>
+
+<main class="poster">
+  <svg class="bunting" viewBox="0 0 600 80" aria-hidden="true">
+    <path d="M0 6 Q300 70 600 6" fill="none" stroke="#4f6b9c" stroke-width="2.5" stroke-linecap="round"/>
+    <g stroke="#2c4a7c" stroke-width="2.5" stroke-linejoin="round">
+      <polygon points="42,17 78,17 60,52" fill="#ffc9dc"/>
+      <polygon points="102,26 138,26 120,61" fill="#ffe29a"/>
+      <polygon points="162,32 198,32 180,67" fill="#c4ecd9"/>
+      <polygon points="222,36 258,36 240,71" fill="#d6c8f5"/>
+      <polygon points="282,37 318,37 300,72" fill="#ffffff"/>
+      <polygon points="342,36 378,36 360,71" fill="#ffc9dc"/>
+      <polygon points="402,32 438,32 420,67" fill="#ffe29a"/>
+      <polygon points="462,26 498,26 480,61" fill="#c4ecd9"/>
+      <polygon points="522,17 558,17 540,52" fill="#d6c8f5"/>
+    </g>
+  </svg>
+  <span class="sp" style="width:12px;height:12px;top:84px;left:10px"></span>
+  <span class="sp y" style="width:16px;height:16px;top:120px;right:70px;animation-delay:-1s"></span>
+  <span class="sp y" style="width:10px;height:10px;top:210px;left:20px;animation-delay:-2s"></span>
+  <span class="sp" style="width:14px;height:14px;top:330px;right:14px;animation-delay:-.5s"></span>
+  <span class="sp y" style="width:11px;height:11px;top:470px;left:12px;animation-delay:-1.6s"></span>
+
+  <header>
+    <p class="label">Undangan ulang tahun</p>
+    <h1>Tiup Lilin di Bawah <span class="hl">Bintang</span></h1>
+    <p class="sub">Tria, Mama, dan Papa merayakan ulang tahun bareng keluarga.</p>
+    <svg class="ico buddy" style="stroke:var(--ink)" aria-hidden="true"><use href="#i-star"/></svg>
+  </header>
+
+  <section class="when" aria-label="Waktu dan tempat">
+    <div class="cal"><span class="top">Sabtu</span><span class="d">24</span><span class="m">Oktober 2026</span></div>
+    <div class="where">
+      <p class="t">15.00 WIB <small>sampai malam</small></p>
+      <p class="l">Kala Cemara, Greenforest Bandung</p>
+      <p class="a">Jl. Sersan Bajuri No.102, Cihideung, Parongpong, Kabupaten Bandung Barat</p>
+    </div>
+  </section>
+
+  <section class="bds" aria-label="Tanggal ulang tahun">
+    <div class="bdc pink"><svg class="ico ic" aria-hidden="true"><use href="#i-candle"/></svg><span class="nm">Tria</span><span class="dt">20 Okt</span></div>
+    <div class="bdc mint"><svg class="ico ic" aria-hidden="true"><use href="#i-candle"/></svg><span class="nm">Mama</span><span class="dt">3 Okt</span></div>
+    <div class="bdc lilac"><svg class="ico ic" aria-hidden="true"><use href="#i-candle"/></svg><span class="nm">Papa</span><span class="dt">24 Okt</span></div>
+  </section>
+
+  <section class="grid2">
+    <div class="mini" aria-label="Dress code">
+      <h3>Dress code</h3>
+      <div class="row"><div class="b"><svg class="ico" aria-hidden="true"><use href="#i-shirt"/></svg></div><div><b>Atasan putih</b><span>kaos, kemeja, blus</span></div></div>
+      <div class="row"><div class="b j"><svg class="ico" aria-hidden="true"><use href="#i-jeans"/></svg></div><div><b>Bawahan jeans</b><span>biru muda sampai tua</span></div></div>
+    </div>
+    <div class="mini" aria-label="Snack dan minuman">
+      <h3>Snack dan minuman</h3>
+      <div class="row"><div class="b"><svg class="ico" aria-hidden="true"><use href="#i-snack"/></svg></div><div><b>Snack</b><span>Cireng, kentang goreng, sosis, dan lainnya</span></div></div>
+      <div class="row"><div class="b j"><svg class="ico" aria-hidden="true"><use href="#i-cup"/></svg></div><div><b>Minuman</b><span>Jus, kopi, mojito, dan lainnya</span></div></div>
+      <a class="lnk" href="https://drive.google.com/file/d/1Z2DD34FisKMChJIp4_i_uAvGwZ8JzSRt/view?usp=sharing" target="_blank" rel="noopener">Lihat detail menu</a>
+    </div>
+  </section>
+
+  <section class="plan" aria-label="Acara">
+    <div>
+      <h3>Sore <small>mulai 15.00</small></h3>
+      <div class="chips">
+        <span class="chip"><i><svg class="ico" aria-hidden="true"><use href="#i-candle"/></svg></i>Tiup lilin</span>
+        <span class="chip"><i><svg class="ico" aria-hidden="true"><use href="#i-tv"/></svg></i>Nonton</span>
+        <span class="chip"><i><svg class="ico" aria-hidden="true"><use href="#i-game"/></svg></i>Main games</span>
+        <span class="chip"><i><svg class="ico" aria-hidden="true"><use href="#i-bear"/></svg></i>Mainan anak</span>
+      </div>
+    </div>
+    <div class="night">
+      <h3>Malam</h3>
+      <div class="chips">
+        <span class="chip"><i><svg class="ico" aria-hidden="true"><use href="#i-corn"/></svg></i>Bakar jagung</span>
+        <span class="chip"><i><svg class="ico" aria-hidden="true"><use href="#i-marsh"/></svg></i>Marshmallow</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>Kakak, kakak ipar, dan para keponakan, ditunggu ya!<span>Kabari Tria kalau bisa datang.</span></p>
+    <a class="btn" href="index.html">Buka undangan interaktif</a>
+  </footer>
+</main>
+
+</body>
+</html>
