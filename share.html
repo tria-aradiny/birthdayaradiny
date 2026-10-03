@@ -102,6 +102,10 @@ footer p span { display: block; font-weight: 600; color: var(--ink-soft); font-s
 }
 .btn:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 
+.acts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+button.btn { border: 0; font-family: inherit; cursor: pointer; }
+button.btn.alt { background: var(--white); box-shadow: 0 4px 0 var(--edge); }
+.note { flex-basis: 100%; font-size: 12px; font-weight: 600; color: var(--ink-soft); min-height: 1.2em; }
 .lnk { font-size: 12px; font-weight: 700; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
 .lnk:focus-visible { outline: 3px solid var(--ink); outline-offset: 3px; }
 @media (max-width: 360px) { .grid2 { grid-template-columns: 1fr; } .plan { grid-template-columns: 1fr; } }
@@ -278,9 +282,31 @@ footer p span { display: block; font-weight: 600; color: var(--ink-soft); font-s
 
   <footer>
     <p>Kakak, kakak ipar, dan para keponakan, ditunggu ya!<span>Kabari Tria kalau bisa datang.</span></p>
-    <a class="btn" href="index.html">Buka undangan interaktif</a>
+    <div class="acts">
+      <button class="btn" id="b-share" type="button" hidden>Bagikan gambar</button>
+      <button class="btn alt" id="b-save" type="button" hidden>Simpan gambar</button>
+      <a class="btn alt" href="index.html">Buka undangan interaktif</a>
+      <p class="note" id="b-note" aria-live="polite"></p>
+    </div>
   </footer>
 </main>
 
+<script src="kartu.js"></script>
+<script>
+(function () {
+  if (!window.Kartu) return;
+  var bs = document.getElementById('b-share'), bv = document.getElementById('b-save'), nt = document.getElementById('b-note');
+  bs.hidden = false; bv.hidden = false;
+  var text = 'Kamu diundang ke ulang tahun Tria, Mama, dan Papa! Sabtu, 24 Oktober 2026, 15.00 WIB di Kala Cemara, Greenforest Bandung. Dress code: atasan putih dan jeans.';
+  function fail() { nt.textContent = 'Gambar belum bisa dibuat di browser ini.'; }
+  window.addEventListener('load', function () { Kartu.make().catch(function () {}); });
+  bs.addEventListener('click', function () {
+    Kartu.share(text).then(function (r) { nt.textContent = r === 'saved' ? 'Gambar tersimpan. Tinggal kirim dari galeri.' : ''; }, fail);
+  });
+  bv.addEventListener('click', function () {
+    Kartu.save().then(function () { nt.textContent = 'Gambar tersimpan. Tinggal kirim dari galeri.'; }, fail);
+  });
+})();
+</script>
 </body>
 </html>

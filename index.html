@@ -258,6 +258,8 @@ main { display: flex; flex-direction: column; gap: 22px; padding-top: 30px; }
 .sbtn.cp { --bg: var(--butter); --sh: #ffd36a; }
 .sbtn.nt { --bg: var(--lilac); --sh: #b8a6ea; }
 .share-note { font-size: 14px; }
+.card-preview { display: block; width: 100%; max-width: 230px; height: auto; aspect-ratio: 9 / 16; margin: 6px auto 4px; border-radius: 20px; background: var(--sky-2); box-shadow: 0 5px 0 var(--edge); }
+.share-sub { margin-top: 6px; }
 @media (max-width: 380px) { .menu { grid-template-columns: 1fr; } }
 .agenda { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 .phase { background: var(--white); border-radius: 28px; padding: 24px 22px; box-shadow: 0 6px 0 var(--edge); display: flex; flex-direction: column; gap: 12px; min-width: 0; position: relative; }
@@ -644,18 +646,24 @@ footer p { color: var(--ink-soft); font-weight: 600; margin-top: 6px; }
     <div class="sticker"><svg class="ico" aria-hidden="true"><use href="#i-star"/></svg></div>
     <p class="label">Bagikan</p>
     <h2>Kirim ke keluarga</h2>
-    <p>Yang dibagikan adalah kartu satu halaman yang berisi semua info penting, enak dilihat di sosmed dan chat.</p>
-    <a class="btn" id="cardlink" href="share.html">Lihat kartu satu halaman</a>
+    <p>Yang dikirim berupa gambar kartu satu halaman berisi semua info penting, jadi langsung tampil di chat dan sosmed tanpa perlu buka link.</p>
+    <img class="card-preview" id="card-preview" alt="Gambar kartu undangan: Sabtu 24 Oktober 2026, 15.00 WIB, Kala Cemara Greenforest Bandung" hidden>
+    <div class="share-grid">
+      <button class="sbtn nt" id="s-img">Bagikan gambar</button>
+      <button class="sbtn cp" id="s-save">Simpan gambar</button>
+      <button class="sbtn ig" id="s-ig">Instagram</button>
+      <button class="sbtn tg" id="s-copyimg" hidden>Salin gambar</button>
+    </div>
+    <p class="label share-sub">Atau kirim sebagai link</p>
     <div class="share-grid">
       <a class="sbtn wa" id="s-wa" href="#" target="_blank" rel="noopener">WhatsApp</a>
       <a class="sbtn tg" id="s-tg" href="#" target="_blank" rel="noopener">Telegram</a>
       <a class="sbtn fb" id="s-fb" href="#" target="_blank" rel="noopener">Facebook</a>
       <a class="sbtn xx" id="s-x" href="#" target="_blank" rel="noopener">X</a>
-      <button class="sbtn ig" id="s-ig">Instagram</button>
       <button class="sbtn cp" id="s-cp">Salin link</button>
-      <button class="sbtn nt" id="s-native" hidden>Bagikan lainnya</button>
     </div>
-    <p class="share-note" id="share-note" aria-live="polite">Untuk Instagram, tap tombolnya untuk menyalin link, lalu tempel di Story atau DM.</p>
+    <p class="share-note" id="share-note" aria-live="polite">Tap Bagikan gambar, lalu pilih WhatsApp, Instagram, atau aplikasi lain.</p>
+    <a class="btn" id="cardlink" href="share.html">Lihat versi halaman</a>
   </section>
 
   <footer>
@@ -668,6 +676,7 @@ footer p { color: var(--ink-soft); font-weight: 600; margin-top: 6px; }
 </main>
 </div>
 
+<script src="kartu.js"></script>
 <script>
 (function () {
   var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -897,14 +906,40 @@ footer p { color: var(--ink-soft); font-weight: 600; margin-top: 6px; }
       } else { res(fallbackCopy()); }
     }
     var cp = document.getElementById('s-cp'), ig = document.getElementById('s-ig');
+    var imgBtn = document.getElementById('s-img'), saveBtn = document.getElementById('s-save'), copyBtn = document.getElementById('s-copyimg');
+    var preview = document.getElementById('card-preview');
+    var hasKartu = !!window.Kartu;
+    var caption = text + (/^https?:/.test(shareUrl) ? '\nUndangan interaktif: ' + shareUrl : '');
+    function fail() { note.textContent = 'Gambar belum bisa dibuat di browser ini. Pakai tombol link di bawah ya.'; }
     cp.addEventListener('click', function () { copyLink('Link tersalin. Tinggal tempel di mana saja.'); var p = center(cp); burst(p[0], p[1], 10, PAL, true); });
-    ig.addEventListener('click', function () { copyLink('Link tersalin. Buka Instagram, lalu tempel di Story atau DM.'); var p = center(ig); burst(p[0], p[1], 10, PAL, true); });
-    var nt = document.getElementById('s-native');
-    if (navigator.share) {
-      nt.hidden = false;
-      nt.addEventListener('click', function () {
-        navigator.share({ title: 'Tiup Lilin di Bawah Bintang', text: text, url: shareUrl }).catch(function () {});
+    if (hasKartu) {
+      /* siapkan gambar lebih awal supaya tombol Bagikan langsung membuka menu share */
+      var prepare = function () {
+        Kartu.make().then(function (blob) { preview.src = URL.createObjectURL(blob); preview.hidden = false; }, function () {});
+      };
+      if (document.readyState === 'complete') prepare(); else window.addEventListener('load', prepare);
+      imgBtn.addEventListener('click', function () {
+        var p = center(imgBtn); burst(p[0], p[1], 10, PAL, true);
+        Kartu.share(caption).then(function (r) {
+          if (r === 'shared') note.textContent = 'Terkirim. Terima kasih sudah membagikan!';
+          else if (r === 'saved') note.textContent = 'Gambar tersimpan di perangkatmu. Tinggal kirim atau unggah dari galeri.';
+        }, fail);
       });
+      saveBtn.addEventListener('click', function () {
+        Kartu.save().then(function () { note.textContent = 'Gambar tersimpan. Tinggal kirim atau unggah dari galeri.'; }, fail);
+      });
+      ig.addEventListener('click', function () {
+        var p = center(ig); burst(p[0], p[1], 10, PAL, true);
+        Kartu.save().then(function () { note.textContent = 'Gambar tersimpan. Buka Instagram, lalu pilih dari galeri untuk Story atau Post.'; }, fail);
+      });
+      if (Kartu.canCopy()) {
+        copyBtn.hidden = false;
+        copyBtn.addEventListener('click', function () {
+          Kartu.copy().then(function (ok) { note.textContent = ok ? 'Gambar tersalin. Tempel (paste) di chat atau sosmed.' : 'Salin gambar tidak didukung. Pakai Simpan gambar.'; });
+        });
+      }
+    } else {
+      [imgBtn, saveBtn, ig].forEach(function (b) { b.addEventListener('click', fail); });
     }
   })();
 
