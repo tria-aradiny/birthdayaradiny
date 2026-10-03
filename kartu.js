@@ -12,7 +12,7 @@
   var BASE_NAME = 'undangan-tiup-lilin';
 
   var ICONS = {
-  "candle": "<ellipse cx=\"24\" cy=\"42\" rx=\"14\" ry=\"3.5\" fill=\"#fff\"/><rect x=\"17\" y=\"21\" width=\"14\" height=\"21\" rx=\"3\" fill=\"#fff\"/><path d=\"M17 29 l14 -4 M17 36 l14 -4\" stroke-width=\"2\" opacity=\".5\"/><path d=\"M24 5 C30 12 31 17 24 21 C17 17 18 12 24 5Z\" fill=\"#ffe29a\"/>",
+  "candle": "<ellipse cx=\"24\" cy=\"42\" rx=\"14\" ry=\"3.5\" fill=\"#fff\"/><rect x=\"17\" y=\"21\" width=\"14\" height=\"21\" rx=\"3\" fill=\"#fff\"/><path d=\"M17 29 l14 -4 M17 36 l14 -4\" stroke-width=\"2\" opacity=\".5\"/>",
   "tv": "<path d=\"M18 12 L13 5 M30 12 L35 5\"/><rect x=\"5\" y=\"12\" width=\"38\" height=\"27\" rx=\"7\" fill=\"#9ccbf2\"/><rect x=\"10\" y=\"17\" width=\"28\" height=\"17\" rx=\"4\" fill=\"#fff\" stroke-width=\"2\"/><polygon points=\"21,21 21,30 29,25.5\" fill=\"#ffc9dc\" stroke-width=\"2\"/><path d=\"M14 39 v4 M34 39 v4\"/>",
   "game": "<rect x=\"4\" y=\"14\" width=\"40\" height=\"23\" rx=\"11.5\" fill=\"#d6c8f5\"/><rect x=\"11\" y=\"23\" width=\"12\" height=\"4.5\" rx=\"2\" fill=\"#fff\" stroke-width=\"2\"/><rect x=\"14.8\" y=\"19.5\" width=\"4.5\" height=\"12\" rx=\"2\" fill=\"#fff\" stroke-width=\"2\"/><circle cx=\"31\" cy=\"23\" r=\"2.8\" fill=\"#ffc9dc\" stroke-width=\"2\"/><circle cx=\"37\" cy=\"28.5\" r=\"2.8\" fill=\"#ffe29a\" stroke-width=\"2\"/>",
   "bear": "<circle cx=\"11\" cy=\"12\" r=\"6.5\" fill=\"#ffe29a\"/><circle cx=\"37\" cy=\"12\" r=\"6.5\" fill=\"#ffe29a\"/><circle cx=\"24\" cy=\"26\" r=\"17\" fill=\"#ffe29a\"/><ellipse cx=\"24\" cy=\"32\" rx=\"7.5\" ry=\"5.5\" fill=\"#fff\" stroke-width=\"2\"/><circle cx=\"17.5\" cy=\"24\" r=\"1.8\" fill=\"#2c4a7c\" stroke=\"none\"/><circle cx=\"30.5\" cy=\"24\" r=\"1.8\" fill=\"#2c4a7c\" stroke=\"none\"/><ellipse cx=\"24\" cy=\"29.5\" rx=\"2.6\" ry=\"1.9\" fill=\"#2c4a7c\" stroke=\"none\"/><circle cx=\"13\" cy=\"31\" r=\"3\" fill=\"#ffc9dc\" stroke=\"none\" opacity=\".9\"/><circle cx=\"35\" cy=\"31\" r=\"3\" fill=\"#ffc9dc\" stroke=\"none\" opacity=\".9\"/>",
@@ -70,7 +70,40 @@
     p.forEach(function (q, i) { var px = x + q[0] / 100 * s - s / 2, py = y + q[1] / 100 * s - s / 2; if (i) c.lineTo(px, py); else c.moveTo(px, py); });
     c.closePath(); c.fillStyle = color; c.fill(); c.restore();
   }
-  function ico(c, ic, name, x, y, s) { if (ic[name]) c.drawImage(ic[name], x, y, s, s); }
+  var NOW = 0;
+  /* api lilin berkedip (ikon lilin digambar tanpa api, apinya digambar di sini) */
+  function flame(c, x, y, s, t) {
+    var f = s / 48, ph = ((x * 0.013 + y * 0.007) % 1 + 1) % 1;
+    var fl = Math.sin(2 * Math.PI * (t / 1.5 + ph)) + 0.5 * Math.sin(2 * Math.PI * (t / 0.75 + ph * 2));
+    c.save(); c.translate(x, y); c.scale(f, f);
+    c.beginPath(); c.arc(24, 13, 11 + 2 * fl, 0, Math.PI * 2);
+    c.fillStyle = 'rgba(255,226,154,' + (0.28 + 0.1 * fl) + ')'; c.fill();
+    c.translate(24, 21); c.rotate(fl * 2.5 * Math.PI / 180); c.scale(1 - 0.05 * fl, 1 + 0.1 * fl); c.translate(-24, -21);
+    c.beginPath(); c.moveTo(24, 5); c.bezierCurveTo(30, 12, 31, 17, 24, 21); c.bezierCurveTo(17, 17, 18, 12, 24, 5); c.closePath();
+    c.fillStyle = BUTTER; c.fill(); c.strokeStyle = INK; c.lineWidth = 2.5; c.lineJoin = 'round'; c.stroke();
+    c.restore();
+  }
+  function ico(c, ic, name, x, y, s) {
+    if (ic[name]) c.drawImage(ic[name], x, y, s, s);
+    if (name === 'candle') flame(c, x, y, s, NOW);
+  }
+
+  /* konfeti jatuh pelan, posisinya berulang tiap 6 detik supaya video menyambung mulus */
+  var CONF = (function () {
+    var cols = [PINK, BUTTER, MINT, LILAC, '#9ccbf2', WHITE], a = [], i, r = 7;
+    function rnd() { r = (r * 16807) % 2147483647; return r / 2147483647; }
+    for (i = 0; i < 22; i++) a.push({ x: rnd(), ph: rnd(), cyc: rnd() < 0.5 ? 1 : 2, w: 4 + rnd() * 3, col: cols[i % cols.length], amp: 6 + rnd() * 10, sw: rnd(), rot: rnd() * 6.28, round: rnd() < 0.3 });
+    return a;
+  })();
+  function confetti(c, H, vw, t) {
+    CONF.forEach(function (p) {
+      var u = (p.ph + p.cyc * t / 6) % 1, y = -14 + u * (H + 28);
+      var x = -(vw - W) / 2 + p.x * vw + Math.sin(2 * Math.PI * (t / 3 + p.sw)) * p.amp;
+      c.save(); c.translate(x, y); c.rotate(p.rot + 2 * Math.PI * p.cyc * t / 6 * 1.5); c.globalAlpha = 0.9; c.fillStyle = p.col;
+      if (p.round) { c.beginPath(); c.arc(0, 0, p.w / 2, 0, Math.PI * 2); c.fill(); } else { rr(c, -p.w / 2, -p.w, p.w, p.w * 2, 1.5); c.fill(); }
+      c.restore();
+    });
+  }
 
   /* chip berlapis (flow) : mengembalikan tinggi total */
   function chips(c, ic, list, x, y, w, bg, draw) {
@@ -109,7 +142,8 @@
   }
 
   /* ---------- seluruh poster ---------- */
-  function paint(c, H, ic, g, topExtra, t) {
+  function paint(c, H, ic, g, topExtra, t, vw) {
+    NOW = t; vw = vw || W;
     var X0 = 12, CW = 416, PAD = 18, IX = X0 + PAD, IW = CW - PAD * 2, cardY = 22;
     var cardH = H - cardY - 30, y, i;
 
@@ -150,7 +184,7 @@
     c.font = h1;
     var pre = c.measureText('Bawah ').width, bw = c.measureText('Bintang').width;
     txt(c, 'Bawah', IX, l2, h1, INK);
-    c.save(); c.translate(IX + pre - 5 + (bw + 10) / 2, l2 - 15); c.rotate(-2.5 * Math.PI / 180);
+    c.save(); c.translate(IX + pre - 5 + (bw + 10) / 2, l2 - 15); c.rotate((-2.5 + Math.sin(2 * Math.PI * t / 3 + 1)) * Math.PI / 180);
     box(c, -(bw + 10) / 2, -22, bw + 10, 44, 14, BUTTER, '#ffd36a', 4);
     c.restore();
     txt(c, 'Bintang', IX + pre, l2, h1, INK);
@@ -167,7 +201,7 @@
     var place = wrap(c, 'Kala Cemara, Greenforest Bandung', fnt(700, 15, FB), rw);
     var addr = wrap(c, 'Jl. Sersan Bajuri No.102, Cihideung, Parongpong, Kabupaten Bandung Barat', fnt(600, 12.5, FB), rw);
     var hR = 30 + place.length * 19 + 4 + addr.length * 17, hW = Math.max(calH, hR) + 8;
-    c.save(); c.translate(calX + calW / 2, y + 4 + calH / 2); c.rotate(-3 * Math.PI / 180);
+    c.save(); c.translate(calX + calW / 2, y + 4 + calH / 2); c.rotate((-3 + 1.6 * Math.sin(2 * Math.PI * t / 3)) * Math.PI / 180);
     box(c, -calW / 2, -calH / 2, calW, calH, 18, WHITE, EDGE, 5);
     c.save(); rr(c, -calW / 2, -calH / 2, calW, calH, 18); c.clip(); c.fillStyle = PINK; c.fillRect(-calW / 2, -calH / 2, calW, 22); c.restore();
     spaced(c, 'SABTU', 0, -calH / 2 + 15, fnt(700, 11, FB), INK, 1.76, true);
@@ -185,11 +219,13 @@
     /* tiga tanggal ulang tahun */
     var bdW = (IW - 20) / 3, bdH = 92;
     [['Tria', '20 Okt', PINK, '#ffacc8'], ['Mama', '3 Okt', MINT, '#9edcc0'], ['Papa', '24 Okt', LILAC, '#b8a6ea']].forEach(function (b, k) {
-      var bx = IX + k * (bdW + 10);
+      var bx = IX + k * (bdW + 10), u = ((t % 3) - k * 0.3) / 0.8, hop = u > 0 && u < 1 ? -7 * Math.sin(Math.PI * u) : 0;
+      c.save(); c.translate(0, hop);
       box(c, bx, y, bdW, bdH, 18, b[2], b[3], 4);
       ico(c, ic, 'candle', bx + bdW / 2 - 17, y + 8, 34);
       txt(c, b[0], bx + bdW / 2, y + 62, fnt(700, 18, FD), INK, 'center');
       txt(c, b[1], bx + bdW / 2, y + 80, fnt(700, 13, FB), INK, 'center');
+      c.restore();
     });
     y += bdH + 4 + g;
 
@@ -223,13 +259,19 @@
     box(c, nx, y + p, nw, ph - p * 2, 16, ng);
     txt(c, 'Malam', nx + 10, y + p + 10 + 14, fnt(700, 16, FD), INK);
     chips(c, ic, malam, nx + 10, y + p + 10 + 22, nw - 20, 'rgba(255,255,255,.75)', true);
+    sparkle(c, nx + nw - 16, y + p + 17, 11, WHITE, t, 0.1);
+    sparkle(c, nx + nw - 14, y + ph - p - 9, 8, WHITE, t, 0.6);
     y += ph + 5 + g;
 
     /* penutup */
-    var fl = wrap(c, 'Kakak, kakak ipar, dan para keponakan, ditunggu ya!', fnt(700, 17, FB), IW);
+    var fl = wrap(c, 'Kakak, kakak ipar, dan para keponakan, ditunggu ya!', fnt(700, 17, FB), IW - 56);
     fl.forEach(function (s, k) { txt(c, s, IX, y + 14 + k * 22, fnt(700, 17, FB), INK); });
     var fy = y + 14 + (fl.length - 1) * 22 + 22;
     txt(c, 'Kabari Tria kalau bisa datang.', IX, fy, fnt(600, 13.5, FB), SOFT);
+    var fh = 0.5 - 0.5 * Math.cos(2 * Math.PI * t / 3);
+    c.save(); c.translate(IX + IW - 22, y + 30 - 8 * fh); c.rotate((6 - 12 * fh) * Math.PI / 180);
+    ico(c, ic, 'star', -22, -22, 44); c.restore();
+    confetti(c, H, vw, t);
     return fy + 4 + PAD;   /* bawah isi kartu */
   }
 
@@ -274,7 +316,7 @@
     var s = cv.width / W;
     c.scale(s * P.k, s * P.k);
     if (P.k < 1) c.translate((W / P.k - W) / 2, 0);
-    paint(c, P.H, P.ic, P.g, Math.max(0, P.left) / 2, t);
+    paint(c, P.H, P.ic, P.g, Math.max(0, P.left) / 2, t, W / P.k);
   }
 
   /* ---------- gambar PNG (cadangan) ---------- */
@@ -292,7 +334,7 @@
   var DUR = 6, VID_W = 720;
   function pickType() {
     if (typeof MediaRecorder === 'undefined' || !MediaRecorder.isTypeSupported || !HTMLCanvasElement.prototype.captureStream) return null;
-    var list = ['video/mp4;codecs=avc1.42E01E', 'video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'];
+    var list = ['video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'];
     for (var i = 0; i < list.length; i++) { if (MediaRecorder.isTypeSupported(list[i])) return list[i]; }
     return null;
   }
