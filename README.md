@@ -7,21 +7,23 @@ Acara: Sabtu, 24 Oktober 2026, 15.00 WIB di Kala Cemara, Greenforest Bandung.
 
 - `index.html` : undangan interaktif lengkap
 - `share.html` : kartu satu halaman ringkas (versi halaman web)
-- `kartu.js` : pembuat gambar PNG kartu undangan (1080 x 1920, pas untuk Story/Status), dipakai `index.html` dan `share.html`
+- `kartu.js` : pembuat video loop kartu undangan (9:16, pas untuk Story/Status), dipakai `index.html` dan `share.html`
 - `README.md` : panduan ini
 
 Semua file saling terhubung lewat nama file, jadi simpan `index.html`, `share.html`, dan `kartu.js` di folder yang sama.
 
-## Cara membagikan sebagai gambar
+## Cara membagikan sebagai video
 
-Tombol **Bagikan gambar** membuat PNG kartu undangan langsung di browser, lalu membuka menu share bawaan HP (WhatsApp, Instagram, Telegram, dan lainnya) dengan gambar sudah terlampir. Penerima langsung melihat kartunya, tanpa perlu membuka link.
+Begitu halaman dibuka, browser merekam kartu undangan jadi video loop 6 detik (9:16, 720 x 1280) dengan bunting berayun dan bintang berkelip. Tombol **Bagikan video** membuka menu share bawaan HP (WhatsApp, Instagram, Telegram, dan lainnya) dengan video sudah terlampir. Penerima langsung melihat kartunya bergerak, tanpa perlu membuka link.
 
-- **Simpan gambar** / **Instagram**: menyimpan PNG ke galeri, lalu unggah sebagai Story atau Post.
-- **Salin gambar**: menyalin gambar ke clipboard (muncul kalau browser mendukung), tinggal paste di WhatsApp Web atau Telegram desktop.
-- Di komputer yang tidak mendukung share file, tombol Bagikan gambar otomatis menyimpan file PNG.
-- Tombol WhatsApp, Telegram, Facebook, dan X di bagian bawah tetap mengirim link, karena platform itu tidak bisa menerima gambar lewat tautan.
+- **Simpan video**: menyimpan video ke galeri, lalu unggah sebagai Story atau Post (termasuk Instagram).
+- **Salin link**: menyalin link `share.html` untuk ditempel di mana saja.
+- Format MP4 dipakai kalau browser mendukung (Safari dan Chrome terbaru). Kalau tidak, hasilnya WebM, yang kadang tidak diputar di WhatsApp lama. Kalau ragu, buka dari Safari (iPhone) atau Chrome terbaru (Android).
+- Di komputer yang tidak mendukung share file, Bagikan video otomatis menyimpan file ke folder Download.
+- Kalau browser sama sekali tidak bisa merekam video, otomatis jadi gambar PNG.
+- Perekaman berjalan real-time, jadi tab harus tetap terbuka sekitar 6 detik setelah halaman dimuat.
 
-Tampilan gambar bisa diubah di `kartu.js` (fungsi `paint`).
+Tampilan dan animasinya bisa diubah di `kartu.js` (fungsi `paint`; durasi di `DUR`).
 
 ## Jalankan di komputer
 

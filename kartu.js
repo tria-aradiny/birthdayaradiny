@@ -1,5 +1,6 @@
-/* kartu.js : membuat gambar PNG kartu undangan (1080 x 1920, pas untuk Story/Status) langsung di browser.
-   Dipakai oleh index.html dan share.html. Tidak butuh library atau server. */
+/* kartu.js : membuat video loop (6 detik, 9:16, pas untuk Story/Status) kartu undangan langsung di browser.
+   Kalau browser tidak bisa merekam video, otomatis jadi gambar PNG. Dipakai oleh index.html dan share.html.
+   Tidak butuh library atau server. */
 (function () {
   'use strict';
 
@@ -8,7 +9,7 @@
   var FD = '"Fredoka","Trebuchet MS",system-ui,sans-serif';
   var FB = '"Nunito",system-ui,-apple-system,"Segoe UI",sans-serif';
   var W = 440, OUT_W = 1080, S = OUT_W / W, MIN_H = 1920 / S;
-  var FILE_NAME = 'undangan-tiup-lilin.png';
+  var BASE_NAME = 'undangan-tiup-lilin';
 
   var ICONS = {
   "candle": "<ellipse cx=\"24\" cy=\"42\" rx=\"14\" ry=\"3.5\" fill=\"#fff\"/><rect x=\"17\" y=\"21\" width=\"14\" height=\"21\" rx=\"3\" fill=\"#fff\"/><path d=\"M17 29 l14 -4 M17 36 l14 -4\" stroke-width=\"2\" opacity=\".5\"/><path d=\"M24 5 C30 12 31 17 24 21 C17 17 18 12 24 5Z\" fill=\"#ffe29a\"/>",
@@ -59,11 +60,15 @@
     for (i = 0; i < s.length; i++) { c.fillText(s[i], cx, y); cx += c.measureText(s[i]).width + sp; }
     return total;
   }
-  function sparkle(c, x, y, s, color) {
+  /* t = detik, ph = fase (0..1) supaya tiap bintang berkelip di waktu berbeda */
+  function sparkle(c, x, y, s0, color, t, ph) {
+    var u = 0.5 - 0.5 * Math.cos(2 * Math.PI * (t / 3 + ph)), s = s0 * (0.5 + 0.5 * u);
+    c.save(); c.globalAlpha = 0.45 + 0.55 * u;
+    c.translate(x, y); c.rotate(25 * u * Math.PI / 180); x = 0; y = 0;
     var p = [[50, 0], [62, 38], [100, 50], [62, 62], [50, 100], [38, 62], [0, 50], [38, 38]];
     c.beginPath();
     p.forEach(function (q, i) { var px = x + q[0] / 100 * s - s / 2, py = y + q[1] / 100 * s - s / 2; if (i) c.lineTo(px, py); else c.moveTo(px, py); });
-    c.closePath(); c.fillStyle = color; c.fill();
+    c.closePath(); c.fillStyle = color; c.fill(); c.restore();
   }
   function ico(c, ic, name, x, y, s) { if (ic[name]) c.drawImage(ic[name], x, y, s, s); }
 
@@ -104,7 +109,7 @@
   }
 
   /* ---------- seluruh poster ---------- */
-  function paint(c, H, ic, g, topExtra) {
+  function paint(c, H, ic, g, topExtra, t) {
     var X0 = 12, CW = 416, PAD = 18, IX = X0 + PAD, IW = CW - PAD * 2, cardY = 22;
     var cardH = H - cardY - 30, y, i;
 
@@ -118,6 +123,8 @@
 
     /* bunting (dipotong mengikuti sudut kartu) */
     c.save(); rr(c, X0, cardY, CW, cardH, 32); c.clip();
+    var sway = -1.2 * Math.cos(2 * Math.PI * t / 6) * Math.PI / 180;
+    c.translate(X0 + CW / 2, cardY - 2); c.rotate(sway); c.translate(-(X0 + CW / 2), -(cardY - 2));
     c.translate(X0, cardY - 2); c.scale(CW / 600, CW / 600);
     c.beginPath(); c.moveTo(0, 6); c.quadraticCurveTo(300, 70, 600, 6);
     c.strokeStyle = SOFT; c.lineWidth = 2.5; c.lineCap = 'round'; c.stroke();
@@ -129,11 +136,11 @@
     var bottomBunting = cardY - 2 + 80 * CW / 600;
 
     /* bintang kecil dekoratif */
-    sparkle(c, X0 + 9, bottomBunting + 16, 12, WHITE);
-    sparkle(c, X0 + CW - 74, bottomBunting + 40, 16, BUTTER);
-    sparkle(c, X0 + 8, bottomBunting + 150, 10, BUTTER);
-    sparkle(c, X0 + CW - 8, bottomBunting + 250, 12, WHITE);
-    sparkle(c, X0 + 8, bottomBunting + 440, 11, BUTTER);
+    sparkle(c, X0 + 9, bottomBunting + 16, 12, WHITE, t, 0);
+    sparkle(c, X0 + CW - 74, bottomBunting + 40, 16, BUTTER, t, 0.5);
+    sparkle(c, X0 + 8, bottomBunting + 150, 10, BUTTER, t, 0.25);
+    sparkle(c, X0 + CW - 8, bottomBunting + 250, 12, WHITE, t, 0.75);
+    sparkle(c, X0 + 8, bottomBunting + 440, 11, BUTTER, t, 0.4);
 
     /* header */
     y = bottomBunting + 10 + topExtra;
@@ -147,7 +154,8 @@
     box(c, -(bw + 10) / 2, -22, bw + 10, 44, 14, BUTTER, '#ffd36a', 4);
     c.restore();
     txt(c, 'Bintang', IX + pre, l2, h1, INK);
-    c.save(); c.translate(IX + IW - 28, l1 - 6); c.rotate(-6 * Math.PI / 180);
+    var hp = 0.5 - 0.5 * Math.cos(2 * Math.PI * t / 3);
+    c.save(); c.translate(IX + IW - 28, l1 - 6 - 9 * hp); c.rotate((-6 + 12 * hp) * Math.PI / 180);
     ico(c, ic, 'star', -26, -26, 52); c.restore();
     var sub = wrap(c, 'Tria, Mama, dan Papa merayakan ulang tahun bareng keluarga.', fnt(600, 14, FB), IW);
     var sy = l2 + 24;
@@ -243,44 +251,107 @@
     return Promise.race([all, new Promise(function (r) { setTimeout(r, 4000); })]);
   }
 
-  var cache = null;
-  function make() {
-    if (cache) return cache;
-    cache = Promise.all([loadFonts()].concat(Object.keys(ICONS).map(loadIcon))).then(function (r) {
+  /* ---------- siapkan tata letak (sekali saja) ---------- */
+  var prep = null;
+  function prepare() {
+    if (prep) return prep;
+    prep = Promise.all([loadFonts()].concat(Object.keys(ICONS).map(loadIcon))).then(function (r) {
       var ic = {}; Object.keys(ICONS).forEach(function (k, i) { ic[k] = r[i + 1]; });
       /* ukur dulu supaya isi pasti muat, lalu sebar sisa ruang ke jarak antar bagian */
       var m = document.createElement('canvas').getContext('2d');
-      var base = 14, need = paint(m, 3000, ic, base, 0) + 30;
-      /* kalau isi lebih tinggi dari 9:16 (misalnya font cadangan lebih lebar), kecilkan seluruh kartu supaya tetap 1080 x 1920 */
+      var base = 14, need = paint(m, 3000, ic, base, 0, 0) + 30;
+      /* kalau isi lebih tinggi dari 9:16 (misalnya font cadangan lebih lebar), seluruh kartu dikecilkan supaya tetap 9:16 */
       var H = Math.max(MIN_H, need), k = need > MIN_H ? MIN_H / need : 1;
       var extra = H - need, g = base + Math.min(extra / 6, 18), left = extra - (g - base) * 6;
-      var cv = document.createElement('canvas');
-      cv.width = OUT_W; cv.height = Math.round(MIN_H * S);
-      var c = cv.getContext('2d'); c.scale(S * k, S * k);
-      if (k < 1) c.translate((W / k - W) / 2, 0);
-      paint(c, H, ic, g, Math.max(0, left) / 2);
+      return { ic: ic, H: H, k: k, g: g, left: left };
+    });
+    prep.catch(function () { prep = null; });
+    return prep;
+  }
+  function drawFrame(cv, P, t) {
+    var c = cv.getContext('2d');
+    c.setTransform(1, 0, 0, 1, 0, 0); c.clearRect(0, 0, cv.width, cv.height);
+    var s = cv.width / W;
+    c.scale(s * P.k, s * P.k);
+    if (P.k < 1) c.translate((W / P.k - W) / 2, 0);
+    paint(c, P.H, P.ic, P.g, Math.max(0, P.left) / 2, t);
+  }
+
+  /* ---------- gambar PNG (cadangan) ---------- */
+  function makeImage() {
+    return prepare().then(function (P) {
+      var cv = document.createElement('canvas'); cv.width = OUT_W; cv.height = Math.round(MIN_H * S);
+      drawFrame(cv, P, 1.5);
       return new Promise(function (res, rej) {
-        cv.toBlob(function (b) { b ? res(b) : rej(new Error('toBlob gagal')); }, 'image/png');
+        cv.toBlob(function (b) { b ? res({ blob: b, kind: 'image', type: 'image/png', name: BASE_NAME + '.png' }) : rej(new Error('toBlob gagal')); }, 'image/png');
       });
     });
+  }
+
+  /* ---------- video loop ---------- */
+  var DUR = 6, VID_W = 720;
+  function pickType() {
+    if (typeof MediaRecorder === 'undefined' || !MediaRecorder.isTypeSupported || !HTMLCanvasElement.prototype.captureStream) return null;
+    var list = ['video/mp4;codecs=avc1.42E01E', 'video/mp4;codecs=avc1', 'video/mp4', 'video/webm;codecs=vp9', 'video/webm;codecs=vp8', 'video/webm'];
+    for (var i = 0; i < list.length; i++) { if (MediaRecorder.isTypeSupported(list[i])) return list[i]; }
+    return null;
+  }
+  function makeVideo(type) {
+    return prepare().then(function (P) {
+      var cv = document.createElement('canvas'); cv.width = VID_W; cv.height = Math.round(VID_W * 16 / 9);
+      var stream = cv.captureStream(30), chunks = [], done = false;
+      var rec = new MediaRecorder(stream, { mimeType: type, videoBitsPerSecond: 4000000 });
+      var base = type.split(';')[0];
+      return new Promise(function (res, rej) {
+        function finish() { if (done) return; done = true; try { rec.stop(); } catch (e) {} }
+        rec.ondataavailable = function (e) { if (e.data && e.data.size) chunks.push(e.data); };
+        rec.onerror = function (e) { rej(e.error || new Error('rekam gagal')); };
+        rec.onstop = function () {
+          stream.getTracks().forEach(function (t) { t.stop(); });
+          var b = new Blob(chunks, { type: base });
+          if (!b.size) { rej(new Error('video kosong')); return; }
+          res({ blob: b, kind: 'video', type: base, name: BASE_NAME + (base === 'video/mp4' ? '.mp4' : '.webm') });
+        };
+        var t0 = null;
+        function frame(now) {
+          if (done) return;
+          if (t0 === null) t0 = now;
+          var t = (now - t0) / 1000;
+          if (t >= DUR) { drawFrame(cv, P, 0); setTimeout(finish, 120); return; }
+          drawFrame(cv, P, t);
+          requestAnimationFrame(frame);
+        }
+        drawFrame(cv, P, 0);
+        rec.start();
+        requestAnimationFrame(frame);
+        setTimeout(finish, (DUR + 10) * 1000);   /* jaga-jaga kalau tab di latar belakang */
+      });
+    });
+  }
+
+  var cache = null;
+  function make() {
+    if (cache) return cache;
+    var type = pickType();
+    cache = (type ? makeVideo(type).catch(function () { return makeImage(); }) : makeImage());
     cache.catch(function () { cache = null; });
     return cache;
   }
 
   /* ---------- aksi ---------- */
   function save() {
-    return make().then(function (blob) {
-      var a = document.createElement('a'), u = URL.createObjectURL(blob);
-      a.href = u; a.download = FILE_NAME; document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    return make().then(function (r) {
+      var a = document.createElement('a'), u = URL.createObjectURL(r.blob);
+      a.href = u; a.download = r.name; document.body.appendChild(a); a.click(); document.body.removeChild(a);
       setTimeout(function () { URL.revokeObjectURL(u); }, 4000);
       return 'saved';
     });
   }
   /* hasil: 'shared' | 'saved' | 'cancel' */
   function share(text) {
-    return make().then(function (blob) {
+    return make().then(function (r) {
       var f;
-      try { f = new File([blob], FILE_NAME, { type: 'image/png' }); } catch (e) { f = null; }
+      try { f = new File([r.blob], r.name, { type: r.type }); } catch (e) { f = null; }
       if (f && navigator.canShare && navigator.canShare({ files: [f] })) {
         return navigator.share({ files: [f], title: 'Tiup Lilin di Bawah Bintang', text: text || '' })
           .then(function () { return 'shared'; }, function (err) { return err && err.name === 'AbortError' ? 'cancel' : save(); });
@@ -288,13 +359,6 @@
       return save();
     });
   }
-  function copy() {
-    if (!(navigator.clipboard && window.ClipboardItem)) return Promise.resolve(false);
-    return make().then(function (blob) {
-      return navigator.clipboard.write([new ClipboardItem({ 'image/png': blob })]).then(function () { return true; }, function () { return false; });
-    });
-  }
-  function canCopy() { return !!(navigator.clipboard && window.ClipboardItem); }
 
-  window.Kartu = { make: make, save: save, share: share, copy: copy, canCopy: canCopy };
+  window.Kartu = { make: make, save: save, share: share, DURATION: DUR };
 })();

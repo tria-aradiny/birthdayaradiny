@@ -104,6 +104,7 @@ footer p span { display: block; font-weight: 600; color: var(--ink-soft); font-s
 
 .acts { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
 button.btn { border: 0; font-family: inherit; cursor: pointer; }
+button.btn[disabled] { opacity: .55; cursor: wait; }
 button.btn.alt { background: var(--white); box-shadow: 0 4px 0 var(--edge); }
 .note { flex-basis: 100%; font-size: 12px; font-weight: 600; color: var(--ink-soft); min-height: 1.2em; }
 .lnk { font-size: 12px; font-weight: 700; color: var(--ink); text-decoration: underline; text-underline-offset: 3px; }
@@ -283,8 +284,8 @@ button.btn.alt { background: var(--white); box-shadow: 0 4px 0 var(--edge); }
   <footer>
     <p>Kakak, kakak ipar, dan para keponakan, ditunggu ya!<span>Kabari Tria kalau bisa datang.</span></p>
     <div class="acts">
-      <button class="btn" id="b-share" type="button" hidden>Bagikan gambar</button>
-      <button class="btn alt" id="b-save" type="button" hidden>Simpan gambar</button>
+      <button class="btn" id="b-share" type="button" hidden>Bagikan video</button>
+      <button class="btn alt" id="b-save" type="button" hidden>Simpan video</button>
       <a class="btn alt" href="index.html">Buka undangan interaktif</a>
       <p class="note" id="b-note" aria-live="polite"></p>
     </div>
@@ -297,14 +298,21 @@ button.btn.alt { background: var(--white); box-shadow: 0 4px 0 var(--edge); }
   if (!window.Kartu) return;
   var bs = document.getElementById('b-share'), bv = document.getElementById('b-save'), nt = document.getElementById('b-note');
   bs.hidden = false; bv.hidden = false;
+  var video = true;
   var text = 'Kamu diundang ke ulang tahun Tria, Mama, dan Papa! Sabtu, 24 Oktober 2026, 15.00 WIB di Kala Cemara, Greenforest Bandung. Dress code: atasan putih dan jeans.';
-  function fail() { nt.textContent = 'Gambar belum bisa dibuat di browser ini.'; }
-  window.addEventListener('load', function () { Kartu.make().catch(function () {}); });
+  function fail() { nt.textContent = 'Video belum bisa dibuat di browser ini.'; }
+  bs.disabled = bv.disabled = true; nt.textContent = 'Menyiapkan video, tunggu sekitar 6 detik...';
+  window.addEventListener('load', function () {
+    Kartu.make().then(function (r) {
+      if (r.kind !== 'video') { bs.textContent = 'Bagikan gambar'; bv.textContent = 'Simpan gambar'; }
+      nt.textContent = ''; bs.disabled = bv.disabled = false;
+    }, function () { fail(); bs.disabled = bv.disabled = false; });
+  });
   bs.addEventListener('click', function () {
-    Kartu.share(text).then(function (r) { nt.textContent = r === 'saved' ? 'Gambar tersimpan. Tinggal kirim dari galeri.' : ''; }, fail);
+    Kartu.share(text).then(function (r) { nt.textContent = r === 'saved' ? 'Tersimpan. Tinggal kirim dari galeri.' : ''; }, fail);
   });
   bv.addEventListener('click', function () {
-    Kartu.save().then(function () { nt.textContent = 'Gambar tersimpan. Tinggal kirim dari galeri.'; }, fail);
+    Kartu.save().then(function () { nt.textContent = 'Tersimpan. Tinggal kirim dari galeri.'; }, fail);
   });
 })();
 </script>

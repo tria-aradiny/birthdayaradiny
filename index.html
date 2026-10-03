@@ -260,6 +260,7 @@ main { display: flex; flex-direction: column; gap: 22px; padding-top: 30px; }
 .share-note { font-size: 14px; }
 .card-preview { display: block; width: 100%; max-width: 230px; height: auto; aspect-ratio: 9 / 16; margin: 6px auto 4px; border-radius: 20px; background: var(--sky-2); box-shadow: 0 5px 0 var(--edge); }
 .share-sub { margin-top: 6px; }
+.sbtn[disabled] { opacity: .55; cursor: wait; transform: none; }
 @media (max-width: 380px) { .menu { grid-template-columns: 1fr; } }
 .agenda { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; }
 .phase { background: var(--white); border-radius: 28px; padding: 24px 22px; box-shadow: 0 6px 0 var(--edge); display: flex; flex-direction: column; gap: 12px; min-width: 0; position: relative; }
@@ -646,23 +647,15 @@ footer p { color: var(--ink-soft); font-weight: 600; margin-top: 6px; }
     <div class="sticker"><svg class="ico" aria-hidden="true"><use href="#i-star"/></svg></div>
     <p class="label">Bagikan</p>
     <h2>Kirim ke keluarga</h2>
-    <p>Yang dikirim berupa gambar kartu satu halaman berisi semua info penting, jadi langsung tampil di chat dan sosmed tanpa perlu buka link.</p>
-    <img class="card-preview" id="card-preview" alt="Gambar kartu undangan: Sabtu 24 Oktober 2026, 15.00 WIB, Kala Cemara Greenforest Bandung" hidden>
+    <p>Yang dikirim berupa video pendek kartu satu halaman (bunting berayun, bintang berkelip) berisi semua info penting, jadi langsung tampil di chat dan sosmed tanpa perlu buka link.</p>
+    <video class="card-preview" id="card-preview" muted loop playsinline autoplay hidden aria-label="Video kartu undangan: Sabtu 24 Oktober 2026, 15.00 WIB, Kala Cemara Greenforest Bandung"></video>
+    <img class="card-preview" id="card-preview-img" alt="Gambar kartu undangan: Sabtu 24 Oktober 2026, 15.00 WIB, Kala Cemara Greenforest Bandung" hidden>
     <div class="share-grid">
-      <button class="sbtn nt" id="s-img">Bagikan gambar</button>
-      <button class="sbtn cp" id="s-save">Simpan gambar</button>
-      <button class="sbtn ig" id="s-ig">Instagram</button>
-      <button class="sbtn tg" id="s-copyimg" hidden>Salin gambar</button>
+      <button class="sbtn nt" id="s-img" disabled>Bagikan video</button>
+      <button class="sbtn cp" id="s-save" disabled>Simpan video</button>
+      <button class="sbtn tg" id="s-cp">Salin link</button>
     </div>
-    <p class="label share-sub">Atau kirim sebagai link</p>
-    <div class="share-grid">
-      <a class="sbtn wa" id="s-wa" href="#" target="_blank" rel="noopener">WhatsApp</a>
-      <a class="sbtn tg" id="s-tg" href="#" target="_blank" rel="noopener">Telegram</a>
-      <a class="sbtn fb" id="s-fb" href="#" target="_blank" rel="noopener">Facebook</a>
-      <a class="sbtn xx" id="s-x" href="#" target="_blank" rel="noopener">X</a>
-      <button class="sbtn cp" id="s-cp">Salin link</button>
-    </div>
-    <p class="share-note" id="share-note" aria-live="polite">Tap Bagikan gambar, lalu pilih WhatsApp, Instagram, atau aplikasi lain.</p>
+    <p class="share-note" id="share-note" aria-live="polite">Menyiapkan video, tunggu sekitar 6 detik...</p>
     <a class="btn" id="cardlink" href="share.html">Lihat versi halaman</a>
   </section>
 
@@ -882,10 +875,6 @@ footer p { color: var(--ink-soft); font-weight: 600; margin-top: 6px; }
     try { shareUrl = new URL('share.html', location.href).href; } catch (e) { shareUrl = location.href; }
     var text = 'Kamu diundang ke ulang tahun Tria, Mama, dan Papa! Sabtu, 24 Oktober 2026, 15.00 WIB di Kala Cemara, Greenforest Bandung. Dress code: atasan putih dan jeans.';
     var eu = encodeURIComponent;
-    document.getElementById('s-wa').href = 'https://wa.me/?text=' + eu(text + ' ' + shareUrl);
-    document.getElementById('s-tg').href = 'https://t.me/share/url?url=' + eu(shareUrl) + '&text=' + eu(text);
-    document.getElementById('s-fb').href = 'https://www.facebook.com/sharer/sharer.php?u=' + eu(shareUrl);
-    document.getElementById('s-x').href = 'https://twitter.com/intent/tweet?text=' + eu(text) + '&url=' + eu(shareUrl);
     var note = document.getElementById('share-note');
     function fallbackCopy() {
       var ok = false;
@@ -905,41 +894,40 @@ footer p { color: var(--ink-soft); font-weight: 600; margin-top: 6px; }
         navigator.clipboard.writeText(shareUrl).then(function () { res(true); }, function () { res(fallbackCopy()); });
       } else { res(fallbackCopy()); }
     }
-    var cp = document.getElementById('s-cp'), ig = document.getElementById('s-ig');
-    var imgBtn = document.getElementById('s-img'), saveBtn = document.getElementById('s-save'), copyBtn = document.getElementById('s-copyimg');
-    var preview = document.getElementById('card-preview');
-    var hasKartu = !!window.Kartu;
+    var cp = document.getElementById('s-cp');
+    var imgBtn = document.getElementById('s-img'), saveBtn = document.getElementById('s-save');
+    var pv = document.getElementById('card-preview'), pi = document.getElementById('card-preview-img');
+    var main = [imgBtn, saveBtn];
     var caption = text + (/^https?:/.test(shareUrl) ? '\nUndangan interaktif: ' + shareUrl : '');
-    function fail() { note.textContent = 'Gambar belum bisa dibuat di browser ini. Pakai tombol link di bawah ya.'; }
+    var noun = 'video';
+    function fail() { note.textContent = 'Video belum bisa dibuat di browser ini. Pakai tombol link di bawah ya.'; }
+    function enable() { main.forEach(function (b) { b.disabled = false; }); }
     cp.addEventListener('click', function () { copyLink('Link tersalin. Tinggal tempel di mana saja.'); var p = center(cp); burst(p[0], p[1], 10, PAL, true); });
-    if (hasKartu) {
-      /* siapkan gambar lebih awal supaya tombol Bagikan langsung membuka menu share */
+    if (window.Kartu) {
+      /* video direkam di latar belakang begitu halaman dibuka, supaya tombol Bagikan langsung membuka menu share */
       var prepare = function () {
-        Kartu.make().then(function (blob) { preview.src = URL.createObjectURL(blob); preview.hidden = false; }, function () {});
+        Kartu.make().then(function (r) {
+          var u = URL.createObjectURL(r.blob);
+          if (r.kind === 'video') { pv.src = u; pv.hidden = false; var pr = pv.play(); if (pr && pr.catch) pr.catch(function () {}); }
+          else { pi.src = u; pi.hidden = false; noun = 'gambar'; imgBtn.textContent = 'Bagikan gambar'; saveBtn.textContent = 'Simpan gambar'; }
+          note.textContent = 'Tap Bagikan ' + noun + ', lalu pilih WhatsApp, Instagram, atau aplikasi lain.';
+          enable();
+        }, function () { fail(); enable(); });
       };
       if (document.readyState === 'complete') prepare(); else window.addEventListener('load', prepare);
       imgBtn.addEventListener('click', function () {
         var p = center(imgBtn); burst(p[0], p[1], 10, PAL, true);
         Kartu.share(caption).then(function (r) {
           if (r === 'shared') note.textContent = 'Terkirim. Terima kasih sudah membagikan!';
-          else if (r === 'saved') note.textContent = 'Gambar tersimpan di perangkatmu. Tinggal kirim atau unggah dari galeri.';
+          else if (r === 'saved') note.textContent = 'Tersimpan di perangkatmu. Tinggal kirim atau unggah dari galeri.';
         }, fail);
       });
       saveBtn.addEventListener('click', function () {
-        Kartu.save().then(function () { note.textContent = 'Gambar tersimpan. Tinggal kirim atau unggah dari galeri.'; }, fail);
+        Kartu.save().then(function () { note.textContent = 'Tersimpan. Tinggal kirim atau unggah dari galeri.'; }, fail);
       });
-      ig.addEventListener('click', function () {
-        var p = center(ig); burst(p[0], p[1], 10, PAL, true);
-        Kartu.save().then(function () { note.textContent = 'Gambar tersimpan. Buka Instagram, lalu pilih dari galeri untuk Story atau Post.'; }, fail);
-      });
-      if (Kartu.canCopy()) {
-        copyBtn.hidden = false;
-        copyBtn.addEventListener('click', function () {
-          Kartu.copy().then(function (ok) { note.textContent = ok ? 'Gambar tersalin. Tempel (paste) di chat atau sosmed.' : 'Salin gambar tidak didukung. Pakai Simpan gambar.'; });
-        });
-      }
     } else {
-      [imgBtn, saveBtn, ig].forEach(function (b) { b.addEventListener('click', fail); });
+      fail(); enable();
+      main.forEach(function (b) { b.addEventListener('click', fail); });
     }
   })();
 
