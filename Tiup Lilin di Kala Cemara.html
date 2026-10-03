@@ -1,0 +1,349 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Tiup Lilin di Kala Cemara</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,800&family=Figtree:wght@400;500;600&display=swap">
+<style>
+/* Layout: satu kolom undangan ala poster hutan malam. Hero berisi kue dengan tiga lilin di antara pohon cemara, lalu kartu info bertumpuk. Satu tampilan gelap yang disengaja (undangan malam hari). */
+:root {
+  --night: #0d2420;
+  --pine: #15372e;
+  --pine-2: #1d493d;
+  --fire: #ffa13f;
+  --ember: #ff6a33;
+  --white: #fbfaf6;
+  --denim: #6189b8;
+  --mist: #a8c5b9;
+  --font-display: "Bricolage Grotesque", "Trebuchet MS", system-ui, sans-serif;
+  --font-body: "Figtree", system-ui, -apple-system, "Segoe UI", sans-serif;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+html { background: var(--night); }
+body {
+  background: var(--night);
+  color: var(--white);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  padding-inline: 16px;
+  padding-block: 0 40px;
+  overflow-x: hidden;
+}
+.wrap { max-width: 560px; margin-inline: auto; }
+h1, h2, h3 { font-family: var(--font-display); text-wrap: balance; margin: 0; }
+p { margin: 0; }
+.label {
+  font-size: 12px; font-weight: 600; letter-spacing: .16em; text-transform: uppercase; color: var(--fire);
+}
+
+/* HERO */
+.hero {
+  position: relative; isolation: isolate; overflow: hidden;
+  margin-inline: -16px; padding: 44px 16px 0;
+  background: linear-gradient(180deg, #081a17 0%, var(--night) 45%, var(--pine) 100%);
+}
+.hero-inner { max-width: 560px; margin-inline: auto; position: relative; z-index: 2; }
+.hero h1 {
+  font-size: clamp(2.6rem, 11.5vw, 4.4rem); font-weight: 800; line-height: .95; letter-spacing: -.02em; margin-top: 14px;
+}
+.hero h1 em { font-style: normal; color: var(--fire); }
+.hero .sub { margin-top: 16px; color: var(--mist); max-width: 34ch; }
+.stars span {
+  position: absolute; width: 3px; height: 3px; border-radius: 50%; background: var(--white); opacity: .7;
+  animation: twinkle 3.6s ease-in-out infinite;
+}
+@keyframes twinkle { 0%,100% { opacity: .15; } 50% { opacity: .85; } }
+.fly {
+  position: absolute; bottom: -10px; border-radius: 50%; background: var(--fire); z-index: 1;
+  box-shadow: 0 0 10px 3px rgba(255,161,63,.55); opacity: .5;
+  animation: rise linear infinite;
+}
+@keyframes rise {
+  0% { transform: translate(0,0); opacity: 0; }
+  15% { opacity: .9; }
+  100% { transform: translate(var(--dx), -420px); opacity: 0; }
+}
+.scene { position: relative; z-index: 2; margin-top: 8px; display: grid; place-items: end center; }
+.cake { width: min(100%, 340px); height: auto; display: block; position: relative; z-index: 3; margin-bottom: -2px; }
+.forest { position: absolute; inset-inline: -4%; bottom: 0; width: 108%; height: 78%; z-index: 1; }
+.forest .t { transform-box: fill-box; transform-origin: 50% 100%; animation: sway 6s ease-in-out infinite; }
+.forest .t:nth-child(2n) { animation-duration: 7.5s; animation-delay: -2s; }
+.forest .t:nth-child(3n) { animation-duration: 5.2s; animation-delay: -4s; }
+@keyframes sway { 0%,100% { transform: rotate(-1.2deg); } 50% { transform: rotate(1.2deg); } }
+.flame { transform-box: fill-box; transform-origin: 50% 100%; animation: flicker 1.1s ease-in-out infinite; }
+.flame.b { animation-duration: 1.4s; animation-delay: -.4s; }
+.flame.c { animation-duration: .95s; animation-delay: -.7s; }
+@keyframes flicker {
+  0%,100% { transform: scale(1,1) rotate(-2deg); }
+  30% { transform: scale(.92,1.1) rotate(2deg); }
+  60% { transform: scale(1.06,.94) rotate(-1deg); }
+}
+.glow { animation: pulse 2.4s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
+@keyframes pulse { 0%,100% { opacity: .55; } 50% { opacity: .9; } }
+
+/* COUNTDOWN */
+.count {
+  margin-top: -1px; background: var(--pine); padding: 22px 16px 26px; margin-inline: -16px;
+  border-top: 1px solid rgba(168,197,185,.18);
+}
+.count-inner { max-width: 560px; margin-inline: auto; display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: 14px 24px; }
+.units { display: flex; gap: 10px; }
+.unit { min-width: 64px; padding: 10px 12px 8px; background: var(--night); border-radius: 10px; text-align: left; }
+.unit b { display: block; font-family: var(--font-display); font-size: 1.9rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.unit span { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--mist); }
+
+/* INFO */
+main { display: flex; flex-direction: column; gap: 18px; padding-top: 28px; }
+.when { display: grid; grid-template-columns: auto 1fr; gap: 16px 20px; align-items: center; }
+.date {
+  background: var(--white); color: var(--night); border-radius: 14px; padding: 12px 18px 10px; text-align: center; min-width: 96px;
+}
+.date .d { font-family: var(--font-display); font-weight: 800; font-size: 3.4rem; line-height: .95; display: block; }
+.date .m, .date .w { font-size: 12px; font-weight: 600; letter-spacing: .14em; text-transform: uppercase; display: block; }
+.when h2 { font-size: 1.7rem; font-weight: 800; line-height: 1.1; }
+.when p { color: var(--mist); margin-top: 4px; }
+
+.card { background: var(--pine); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 10px; }
+.card h2 { font-size: 1.45rem; font-weight: 800; line-height: 1.15; }
+.card p { color: var(--mist); }
+.card p strong { color: var(--white); font-weight: 600; }
+.btn {
+  align-self: flex-start; margin-top: 6px; display: inline-flex; align-items: center; gap: 8px; padding: 11px 18px; border-radius: 999px;
+  background: var(--fire); color: var(--night); font-weight: 600; text-decoration: none; font-size: 15px;
+}
+.btn:hover { background: #ffb560; }
+.btn:focus-visible, a:focus-visible { outline: 3px solid var(--white); outline-offset: 3px; }
+
+.dress { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 6px; }
+.sw { display: flex; align-items: center; gap: 12px; flex: 1 1 200px; min-width: 0; }
+.sw i { width: 52px; height: 52px; border-radius: 50%; flex: none; border: 2px solid rgba(255,255,255,.25); }
+.sw .w { background: var(--white); }
+.sw .j { background: var(--denim); background-image: repeating-linear-gradient(135deg, rgba(255,255,255,.1) 0 2px, transparent 2px 6px); }
+.sw b { display: block; font-weight: 600; }
+.sw span { font-size: 14px; color: var(--mist); }
+
+.agenda { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+.phase { background: var(--pine); border-radius: 18px; padding: 22px; display: flex; flex-direction: column; gap: 12px; min-width: 0; }
+.phase.night { background: #0a1c19; border: 1px solid rgba(255,161,63,.3); }
+.phase h3 { font-size: 1.35rem; font-weight: 800; }
+.phase .t { font-size: 13px; color: var(--mist); margin-top: -8px; }
+.phase ul { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+.phase li { display: flex; gap: 10px; align-items: baseline; }
+.phase li::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--fire); flex: none; transform: translateY(-1px); }
+.fire { width: 74px; height: auto; margin-top: 4px; }
+.fire .f { transform-box: fill-box; transform-origin: 50% 100%; animation: flicker 1s ease-in-out infinite; }
+.fire .f2 { animation-duration: .8s; animation-delay: -.3s; }
+
+footer { padding-top: 14px; display: flex; flex-direction: column; gap: 6px; }
+footer h2 { font-size: 1.9rem; font-weight: 800; line-height: 1.1; }
+footer p { color: var(--mist); }
+
+@media (max-width: 520px) {
+  .agenda { grid-template-columns: 1fr; }
+  .when { grid-template-columns: 1fr; }
+  .date { justify-self: start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .stars span, .fly, .forest .t, .flame, .glow, .fire .f { animation: none !important; }
+  .fly { display: none; }
+}
+</style>
+
+<div class="hero" id="hero">
+  <div class="stars" id="stars" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <p class="label">Undangan keluarga</p>
+    <h1>Tiup lilin di bawah <em>cemara</em></h1>
+    <p class="sub">Kita rayakan ulang tahun aku, Mama, dan Papa bareng-bareng. Datang ya, kak.</p>
+  </div>
+
+  <div class="scene">
+    <svg class="forest" viewBox="0 0 600 200" preserveAspectRatio="xMidYMax slice" aria-hidden="true">
+      <defs>
+        <symbol id="pine" viewBox="0 0 60 100">
+          <polygon points="30,0 49,34 11,34"/>
+          <polygon points="30,18 54,58 6,58"/>
+          <polygon points="30,38 58,84 2,84"/>
+          <rect x="26" y="84" width="8" height="16"/>
+        </symbol>
+      </defs>
+      <g fill="#10302a">
+        <g class="t"><use href="#pine" x="-10" y="30" width="90" height="170"/></g>
+        <g class="t"><use href="#pine" x="60" y="70" width="60" height="130"/></g>
+        <g class="t"><use href="#pine" x="440" y="60" width="64" height="140"/></g>
+        <g class="t"><use href="#pine" x="500" y="20" width="100" height="180"/></g>
+      </g>
+      <g fill="#0b221e">
+        <g class="t"><use href="#pine" x="20" y="100" width="46" height="100"/></g>
+        <g class="t"><use href="#pine" x="110" y="110" width="40" height="90"/></g>
+        <g class="t"><use href="#pine" x="410" y="105" width="42" height="95"/></g>
+        <g class="t"><use href="#pine" x="560" y="95" width="48" height="105"/></g>
+      </g>
+    </svg>
+
+    <svg class="cake" viewBox="0 0 240 200" role="img" aria-label="Kue ulang tahun dengan tiga lilin untuk aku, Mama, dan Papa">
+      <defs>
+        <radialGradient id="g" cx="50%" cy="50%" r="50%">
+          <stop offset="0" stop-color="#ffa13f" stop-opacity=".75"/>
+          <stop offset="1" stop-color="#ffa13f" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <ellipse cx="120" cy="188" rx="112" ry="9" fill="#08201c"/>
+      <!-- glow -->
+      <circle class="glow" cx="70" cy="38" r="30" fill="url(#g)"/>
+      <circle class="glow" cx="120" cy="30" r="34" fill="url(#g)"/>
+      <circle class="glow" cx="170" cy="38" r="30" fill="url(#g)"/>
+      <!-- candles -->
+      <rect x="66" y="52" width="8" height="42" rx="2" fill="#ff6a33"/>
+      <rect x="116" y="44" width="8" height="50" rx="2" fill="#fbfaf6"/>
+      <rect x="166" y="52" width="8" height="42" rx="2" fill="#ffa13f"/>
+      <g stroke="#0d2420" stroke-opacity=".22" stroke-width="3">
+        <line x1="66" y1="62" x2="74" y2="58"/><line x1="66" y1="74" x2="74" y2="70"/>
+        <line x1="116" y1="54" x2="124" y2="50"/><line x1="116" y1="66" x2="124" y2="62"/><line x1="116" y1="78" x2="124" y2="74"/>
+        <line x1="166" y1="62" x2="174" y2="58"/><line x1="166" y1="74" x2="174" y2="70"/>
+      </g>
+      <!-- flames -->
+      <path class="flame" d="M70 50 C77 40 78 33 70 22 C62 33 63 40 70 50Z" fill="#ffd06b"/>
+      <path class="flame b" d="M120 42 C127 32 128 25 120 14 C112 25 113 32 120 42Z" fill="#ffd06b"/>
+      <path class="flame c" d="M170 50 C177 40 178 33 170 22 C162 33 163 40 170 50Z" fill="#ffd06b"/>
+      <!-- cake -->
+      <rect x="14" y="132" width="212" height="54" rx="12" fill="#6189b8"/>
+      <g stroke="#fbfaf6" stroke-opacity=".28" stroke-width="2" stroke-dasharray="6 7" fill="none">
+        <path d="M24 160 H216"/>
+      </g>
+      <rect x="36" y="90" width="168" height="46" rx="12" fill="#fbfaf6"/>
+      <g fill="#fbfaf6">
+        <circle cx="62" cy="136" r="7"/><circle cx="108" cy="138" r="8"/><circle cx="150" cy="136" r="7"/><circle cx="188" cy="137" r="6"/>
+      </g>
+      <g font-family="Figtree, system-ui, sans-serif" font-size="13" font-weight="600" fill="#0d2420" text-anchor="middle">
+        <text x="70" y="118">Aku</text><text x="120" y="118">Mama</text><text x="170" y="118">Papa</text>
+      </g>
+    </svg>
+  </div>
+</div>
+
+<section class="count" aria-label="Hitung mundur">
+  <div class="count-inner">
+    <div>
+      <p class="label">Hitung mundur</p>
+      <p id="cd-note" style="color:var(--mist);margin-top:4px">Menuju Sabtu, 24 Oktober 2026, 15.00 WIB</p>
+    </div>
+    <div class="units" id="units">
+      <div class="unit"><b id="cd-d">21</b><span>Hari</span></div>
+      <div class="unit"><b id="cd-h">00</b><span>Jam</span></div>
+      <div class="unit"><b id="cd-m">00</b><span>Menit</span></div>
+    </div>
+  </div>
+</section>
+
+<div class="wrap">
+<main>
+  <section class="when" aria-label="Waktu">
+    <div class="date"><span class="w">Sabtu</span><span class="d">24</span><span class="m">Oktober 2026</span></div>
+    <div>
+      <h2>Mulai jam 15.00 WIB, lanjut sampai malam</h2>
+      <p>Datang dari sore ya, biar nggak ketinggalan tiup lilin.</p>
+    </div>
+  </section>
+
+  <section class="card" aria-label="Lokasi">
+    <p class="label">Lokasi</p>
+    <h2>Kala Cemara</h2>
+    <p><strong>Greenforest Bandung</strong><br>Jl. Sersan Bajuri No.102, Cihideung, Parongpong, Kabupaten Bandung Barat</p>
+    <a class="btn" href="https://www.google.com/maps/search/?api=1&query=Kala+Cemara+Greenforest+Bandung+Jl.+Sersan+Bajuri+No.102+Parongpong" target="_blank" rel="noopener">Buka di Google Maps</a>
+  </section>
+
+  <section class="card" aria-label="Dress code">
+    <p class="label">Dress code</p>
+    <h2>Putih di atas, jeans di bawah</h2>
+    <div class="dress">
+      <div class="sw"><i class="w"></i><div><b>Atasan putih</b><span>kaos, kemeja, atau blus</span></div></div>
+      <div class="sw"><i class="j"></i><div><b>Bawahan jeans</b><span>warna biru atau gelap</span></div></div>
+    </div>
+    <p>Biar fotonya nanti kompak.</p>
+  </section>
+
+  <section class="agenda" aria-label="Acara">
+    <div class="phase">
+      <p class="label">Sore</p>
+      <h3>Mulai 15.00</h3>
+      <ul>
+        <li>Tiup lilin bertiga</li>
+        <li>Nonton bareng</li>
+        <li>Main games</li>
+        <li>Mainan anak, buat para keponakan</li>
+      </ul>
+    </div>
+    <div class="phase night">
+      <p class="label">Malam</p>
+      <h3>Api unggun kecil</h3>
+      <ul>
+        <li>Bakar jagung</li>
+        <li>Bakar marshmallow</li>
+      </ul>
+      <svg class="fire" viewBox="0 0 80 70" aria-hidden="true">
+        <path class="f" d="M40 6 C54 24 58 34 52 46 C48 54 32 54 28 46 C22 34 28 24 40 6Z" fill="#ff6a33"/>
+        <path class="f f2" d="M40 22 C48 32 50 38 46 46 C43 51 37 51 34 46 C31 38 34 32 40 22Z" fill="#ffd06b"/>
+        <rect x="10" y="58" width="60" height="7" rx="3.5" fill="#6b4a2f" transform="rotate(-6 40 61)"/>
+        <rect x="10" y="58" width="60" height="7" rx="3.5" fill="#85603c" transform="rotate(6 40 61)"/>
+      </svg>
+    </div>
+  </section>
+
+  <footer>
+    <p class="label">Keluarga inti saja</p>
+    <h2>Kakak, kakak ipar, dan para keponakan, ditunggu ya.</h2>
+    <p>Kabari aku kalau bisa datang, biar Kala Cemara siap menyambut kita semua.</p>
+  </footer>
+</main>
+</div>
+
+<script>
+(function () {
+  // bintang
+  var stars = document.getElementById('stars');
+  for (var i = 0; i < 26; i++) {
+    var s = document.createElement('span');
+    s.style.left = (Math.random() * 100) + '%';
+    s.style.top = (Math.random() * 55) + '%';
+    s.style.animationDelay = (-Math.random() * 3.6) + 's';
+    s.style.animationDuration = (2.6 + Math.random() * 2.4) + 's';
+    var sz = 2 + Math.random() * 2; s.style.width = s.style.height = sz + 'px';
+    stars.appendChild(s);
+  }
+  // kunang-kunang / bara api
+  var hero = document.getElementById('hero');
+  for (var j = 0; j < 22; j++) {
+    var f = document.createElement('span');
+    f.className = 'fly';
+    var size = 3 + Math.random() * 4;
+    f.style.width = f.style.height = size + 'px';
+    f.style.left = (4 + Math.random() * 92) + '%';
+    f.style.setProperty('--dx', (Math.random() * 60 - 30) + 'px');
+    f.style.animationDuration = (7 + Math.random() * 7) + 's';
+    f.style.animationDelay = (-Math.random() * 12) + 's';
+    hero.appendChild(f);
+  }
+  // hitung mundur ke 24 Oktober 2026 15.00 WIB
+  var target = new Date('2026-10-24T15:00:00+07:00').getTime();
+  var d = document.getElementById('cd-d'), h = document.getElementById('cd-h'), m = document.getElementById('cd-m');
+  var note = document.getElementById('cd-note');
+  function pad(n) { return n < 10 ? '0' + n : '' + n; }
+  function tick() {
+    var diff = target - Date.now();
+    if (diff <= 0) {
+      d.textContent = '0'; h.textContent = '00'; m.textContent = '00';
+      note.textContent = 'Pesta sudah dimulai. Selamat berkumpul!';
+      return;
+    }
+    var mins = Math.floor(diff / 60000);
+    d.textContent = Math.floor(mins / 1440);
+    h.textContent = pad(Math.floor((mins % 1440) / 60));
+    m.textContent = pad(mins % 60);
+  }
+  tick(); setInterval(tick, 30000);
+})();
+</script>
+
+</body></html>
